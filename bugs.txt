@@ -1,0 +1,5 @@
+-- competition investment amount must be greater than 0 otherwise getting 0 initial symbol qty 
+----- steps: added validation in dto -- @IsPositive() to only accept no. greater than 0.
+
+-- update participants by id can update its own rewards. 
+   in order to stop this, we need not accept reward attribute from client side. 

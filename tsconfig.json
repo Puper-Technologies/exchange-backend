@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false,
+    "resolveJsonModule": true,
+    "paths": {
+      "@filters/*": ["./src/common/filters/*"],
+      "@guards/*": ["./src/common/guards/*"],
+      "@interfaces/*": ["./src/common/interfaces/*"],
+      "@pipes/*": ["./src/common/pipes/*"],
+      "@interceptors/*": ["./src/common/interceptors/*"],
+      "@decorators/*": ["./src/common/decorators/*"],
+      "@v1/*": ["src/routes/v1/*"],
+      "@exceptions/*": ["./src/common/exceptions/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@config/*": ["./src/config/*"],
+      "@resources/*": ["./src/resources/*"],
+      "@shared/*": ["./src/shared/*"]
+    }
+  }
+}
