@@ -5,8 +5,17 @@ import { Types } from "mongoose";
 export class WalletService{
     constructor(){}
 
-    async addAmountInWallet(userId: Types.ObjectId, amount){
+    async addAmountInWallet(userId: Types.ObjectId, amount: number){
          
     }
+
+    async createWallet(userId: Types.ObjectId, balance = 0){
+        try {
+            
+        } catch (error) {
+            
+        }
+    }
+    
 
 }

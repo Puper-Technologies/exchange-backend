@@ -8,28 +8,32 @@ export class Wallet {
 
     @Prop({
         type: Types.ObjectId,
-        index:true
+        ref: "User",
+        index: true,
+        required: true
     })
-   userId: Types.ObjectId;
+    userId: Types.ObjectId;   // owner of this wallet
 
-   @Prop({
-       type: {
-           cash: {
-               type: Number,
-               default: 0
-           },
-           points: {
-               type: Number,
-               default:0
-           }
-       }
-   })
-   wallet?;
+    @Prop({
+        type: Types.ObjectId,
+        ref: "Coin",
+        required: true
+    })
+    coinId: Types.ObjectId; 
 
+    @Prop({
+        type: Number,
+        required: true,
+        default: 0
+    })
+    balance: number;
 }
 
 export type WalletDocument = Wallet & Document;
+
 export const WalletSchema = SchemaFactory.createForClass(Wallet).set(
     'versionKey',
     false
 )
+
+WalletSchema.index({userId:1, coinId: 1, }, { unique: true});

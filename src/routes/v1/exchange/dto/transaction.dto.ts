@@ -31,7 +31,7 @@ export class TransactionDto {
     @ApiProperty({ type: String })
     @IsString()
     transactionType: TransactionType;
-
+    
     @ApiProperty({ type: Number })
     @IsNumber()
     cummulativeQuoteQtySell: number;
