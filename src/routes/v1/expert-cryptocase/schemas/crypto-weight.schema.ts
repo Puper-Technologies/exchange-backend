@@ -50,7 +50,7 @@ export class CryptoWeight {
         type: Number
     })
     minQty: number;
-
+    
     @Prop({
         type: Number
     })

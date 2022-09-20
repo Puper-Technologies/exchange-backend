@@ -53,7 +53,7 @@ export class TransactionRepository {
             this.transactionModel.find({userId: userId}).count()
                 .lean(),
         ]);
-        
+
         this.logger.log(`Successfully found the list of crypto portfolio from db ${totalCount}`)
         return { paginatedResult: userTransactions, totalCount };
     } catch (error) {

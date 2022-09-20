@@ -603,7 +603,7 @@ export class CryptocoinsController {
       coinPair,
     );
   }
-
+  
   // - /getCoinsPairByBaseSymbol
   @ApiOkResponse({
     schema: {

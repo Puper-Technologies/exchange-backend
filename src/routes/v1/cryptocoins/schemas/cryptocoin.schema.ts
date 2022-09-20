@@ -1,21 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 
-  // name: 
-  // symbol: 
-  // slug: 
-  // description:
-  // marketCap:
-  // status: 
-  // cmcId: 
-  // logo: 
-  // cmcRank: 
-  // circulatingSupply: 
-  // totalSupply: 
-  // tags: 
-  // dateLaunched: 
-  // category: 
-  // website: 
 @Schema({ timestamps: true })
 export class Cryptocoin {
 

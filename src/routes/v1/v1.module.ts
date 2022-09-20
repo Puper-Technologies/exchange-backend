@@ -7,7 +7,7 @@ import { CryptocoinsModule } from './cryptocoins/cryptocoins.module';
 import { ExpertCryptocasesModule } from './expert-cryptocase/expert-cryptocase.module';
 import { ExchangeModule } from './exchange/exchange.module';
 import { MongoModule } from '@resources/database/mongo.module';
-import { CompetitionModule } from './competition/competition.module';
+// import { CompetitionModule } from './competition/competition.module';
 
 const routes: Routes = [
   {
@@ -18,7 +18,7 @@ const routes: Routes = [
       { path: '/', module: CryptocoinsModule },
       { path: '/', module: ExpertCryptocasesModule },
       { path: '/', module: ExchangeModule },
-      { path: '/', module: CompetitionModule },
+      // { path: '/', module: CompetitionModule },
     ],
   },
 ];
