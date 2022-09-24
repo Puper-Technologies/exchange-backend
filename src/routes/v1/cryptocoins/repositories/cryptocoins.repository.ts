@@ -53,7 +53,7 @@ export class CryptocoinRepository {
                 .findById(id)
                 .lean();
 
-            this.logger.log(`Successfully found cryptocoin with id ${cryptocoin._id} from db`);
+            this.logger.log(`Successfully found cryptocoin with id ${id} from db`);
             return cryptocoin
         } catch (error) {
             this.logger.error(`Unexpected error while searching crypto coin with id ${id} due to ${error.message}`)

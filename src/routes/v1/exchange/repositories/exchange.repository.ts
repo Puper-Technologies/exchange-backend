@@ -155,8 +155,6 @@ export default class ExchangeRepository {
       return responseResult.result[ExchangeHistoryData.periods[periods]];
     } catch (error) {
       throw new InternalServerErrorException(`Unexpected error occured on fetching exchange history`);
-    }
-    
+    }    
   }
-
 }

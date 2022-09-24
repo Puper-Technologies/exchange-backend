@@ -3,7 +3,7 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document, Types } from "mongoose";
 
 
-@Schema()
+@Schema({ timestamps:true })
 export class Wallet {
 
     @Prop({
@@ -27,6 +27,14 @@ export class Wallet {
         default: 0
     })
     balance: number;
+
+    @Prop({
+        type: Boolean,
+        required: true,
+        default: true
+    })
+    isActive: boolean;
+
 }
 
 export type WalletDocument = Wallet & Document;
