@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsArray, IsDate, IsNotEmpty, IsNumber, IsString } from "class-validator";
 
-export class CreateWalletDto {
+export class WalletDto {
 
     @ApiProperty({ type: String })
     @IsNotEmpty()

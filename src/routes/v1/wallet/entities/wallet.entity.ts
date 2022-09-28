@@ -10,5 +10,4 @@ export class WalletEntity {
     
     balance : number;
 
-    walletType : string; // user, admin
 }

@@ -78,9 +78,6 @@ export class ExchangeService {
     return await this.exchangeRepository.getSymbolCurrentPrice(platform) as CurrentPrice[];
   }
 
-
-
-
   async createNewOrder(userId: string, platform: string, createNewOrder: CreateNewOrderDto): Promise<NewOrderResponse> {
     try {
       const { symbol, side, type, quantity, quoteOrderQty, newOrderResp } = createNewOrder

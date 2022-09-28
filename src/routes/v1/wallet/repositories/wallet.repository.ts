@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, ServiceUnavailableException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { MyLogger } from "@shared/logger/logger.service";
 import { Model } from "mongoose";
@@ -29,7 +29,36 @@ export class WalletRepository{
         
     }
 
-    async addMoneyInWallet(){
-        
+    // add or deduct crypto from wallet
+    async transactionInWallet(wallet: Wallet){
+        try {
+            const newWallet = await this.walletModel.updateOne({
+                ...wallet
+            })
+            this.logger.log(`Successfully created a new Wallet in db ${newWallet}`);
+            return newWallet.modifiedCount;
+        }
+        catch (error) {
+            this.logger.error(`Unexpected error while creating new Wallet ${JSON.stringify(wallet)} due to ${error.message}`);
+            throw new MongoError(error);
+        }
+    }
+
+    //
+    async getWalletById(walletId: string) : Promise<Wallet>{
+        try {
+            const foundUser = await this.walletModel
+            .findOne(
+              {
+                _id: walletId,
+              }
+            )
+            .lean();
+      
+            this.logger.log(`Successfully found user by Id in db ${walletId}`);
+            return foundUser
+          } catch (error) {
+            throw new ServiceUnavailableException(`Unexpected error while searching user with id ${walletId} due to ${error.message}`);
+          }
     }
 }
