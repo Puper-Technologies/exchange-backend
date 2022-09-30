@@ -1,11 +1,9 @@
-import { ApiProperty } from "@nestjs/swagger";
-
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CurrentPrice {
-    @ApiProperty({type: String})
-    symbol: string;
+  @ApiProperty({ type: String })
+  symbol: string;
 
-    @ApiProperty({type: Number})
-    price: number;
-    
+  @ApiProperty({ type: Number })
+  price: number;
 }

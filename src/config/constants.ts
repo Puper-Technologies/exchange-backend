@@ -1,7 +1,6 @@
-
 enum WeightingScheme {
-  EQUI_WEIGHTED = "equally",
-  CUSTOM_WEIGHTED = "custom"
+  EQUI_WEIGHTED = 'equally',
+  CUSTOM_WEIGHTED = 'custom',
 }
 
 enum DomainType {
@@ -9,7 +8,7 @@ enum DomainType {
   DEFI = 'defi',
   NFT = 'nft',
   METAVERSE = 'metaverse',
-  TOKEN = 'tokens', 
+  TOKEN = 'tokens',
 }
 
 enum VolatilityType {
@@ -25,17 +24,15 @@ enum TagsType {
 }
 
 enum CryptocaseType {
-  PRIVATE = "private",
-  PUBLIC = "public"
+  PRIVATE = 'private',
+  PUBLIC = 'public',
 }
 
-
-
 enum CryptoWeightState {
-  NEW = "New",
-  LOCKED = "Locked",
-  UNLOCKED = "Unlocked",
-  REMOVED = "Removed"
+  NEW = 'New',
+  LOCKED = 'Locked',
+  UNLOCKED = 'Unlocked',
+  REMOVED = 'Removed',
 }
 
 const jwt = {
@@ -45,10 +42,14 @@ const jwt = {
     refreshToken: '1d',
   },
   secrets: {
-    accessToken: process.env.ACCESS_TOKEN || '283f01ccce922bcc2399e7f8ded981285963cec349daba382eb633c1b3a5f282',
-    refreshToken: process.env.REFRESH_TOKEN || 'c15476aec025be7a094f97aac6eba4f69268e706e603f9e1ec4d815396318c86',
-  }
-}
+    accessToken:
+      process.env.ACCESS_TOKEN ||
+      '283f01ccce922bcc2399e7f8ded981285963cec349daba382eb633c1b3a5f282',
+    refreshToken:
+      process.env.REFRESH_TOKEN ||
+      'c15476aec025be7a094f97aac6eba4f69268e706e603f9e1ec4d815396318c86',
+  },
+};
 
 const commonConstants = {
   pagination: {
@@ -66,19 +67,18 @@ export enum QUOTE_SYMBOL {
   BNB = 'BNB',
 }
 
-export enum TransactionType {
+export enum ExchangeType {
   BUY = 'buy',
   SELL = 'sell',
-  NONE = 'none'
+  NONE = 'none',
 }
 
-export enum TransactionStatus {
+export enum ExchangeStatus {
   SUCCESS = 'success',
   FAILED = 'failed',
   PENDING = 'pending',
-  REJECTED = 'rejected'
+  REJECTED = 'rejected',
 }
-
 
 export enum Platform {
   BINANCE = 'binance',
@@ -108,17 +108,16 @@ export const CRYPTO_DATA = {
     MARKET_DETAILS: '/exchange/v1/markets_details',
     NEW_ORDER: '/exchange/v1/orders/create',
     MULTIPLE_NEW_ORDER: '/exchange/v1/orders/create_multiple',
-    
   },
 };
 
 export const SignInProvider = {
-  PHONE : 'phone',
-  GOOGLE : 'google.com'
-}
+  PHONE: 'phone',
+  GOOGLE: 'google.com',
+};
 
 export const ExchangeHistoryData = {
-  BASE_URL: "https://api.cryptowat.ch",
+  BASE_URL: 'https://api.cryptowat.ch',
   periods: {
     '1m': 60,
     '3m': 180,
@@ -132,68 +131,66 @@ export const ExchangeHistoryData = {
     '12h': 43200,
     '1d': 86400,
     '3d': 259200,
-    '1w': 604800
-  }
-}
+    '1w': 604800,
+  },
+};
 
 enum Period {
-    ONE_MINUTE = '1m',
-    TWO_MINUTE = '3m',
-    FIVE_MINUTE = '5m',
-    FIFTEEN_MINUTE = '15m',
-    THIRTY_MINUTE = '30m',
-    ONE_HOUR = '1h',
-    TWO_HOUR = '2h',
-    FOUR_HOUR = '4h',
-    SIX_HOUR = '6h',
-    TWELVE_HOUR = '12h',
-    ONE_DAY = '1d',
-    THREE_DAY = '3d',
-    ONE_WEEK = '1w'
+  ONE_MINUTE = '1m',
+  TWO_MINUTE = '3m',
+  FIVE_MINUTE = '5m',
+  FIFTEEN_MINUTE = '15m',
+  THIRTY_MINUTE = '30m',
+  ONE_HOUR = '1h',
+  TWO_HOUR = '2h',
+  FOUR_HOUR = '4h',
+  SIX_HOUR = '6h',
+  TWELVE_HOUR = '12h',
+  ONE_DAY = '1d',
+  THREE_DAY = '3d',
+  ONE_WEEK = '1w',
 }
 
 export const SortOrder = {
-  'asc':1,
-  'desc':-1
-}
+  asc: 1,
+  desc: -1,
+};
 
 enum SortOrderType {
   ASCENDING = 'asc',
-  DESCENDING = 'desc'
+  DESCENDING = 'desc',
 }
 
-enum RewardType{
+enum RewardType {
   CASH = 'cash',
   POINTS = 'points',
   VOUCHERS = 'vouchers',
-  CRYPTOS = 'cryptos'
+  CRYPTOS = 'cryptos',
 }
 
 enum ParticipantStatusType {
   LEFT = 'left',
-  ACTIVE = 'active'
+  ACTIVE = 'active',
 }
-
 
 enum CompetitionStatusType {
   DRAFT = 'draft',
   PUBLISH = 'publish',
   ARCHIVE = 'archive',
   LIVE = 'live',
-  ENDED = 'ended'
+  ENDED = 'ended',
 }
 
 export const Duration = {
-  '5m': 5*60*1000,
-  '30m': 30*60*1000,
-  '1hr': 60*60*1000,
-  '3hr': 3*60*60*1000,
-  '6hr': 6*60*60*1000,
-  '12hr': 12*60*60*1000,
-  '24hr': 24*60*60*1000,
-  '1week': 7*24*60*60*1000
-}
-
+  '5m': 5 * 60 * 1000,
+  '30m': 30 * 60 * 1000,
+  '1hr': 60 * 60 * 1000,
+  '3hr': 3 * 60 * 60 * 1000,
+  '6hr': 6 * 60 * 60 * 1000,
+  '12hr': 12 * 60 * 60 * 1000,
+  '24hr': 24 * 60 * 60 * 1000,
+  '1week': 7 * 24 * 60 * 60 * 1000,
+};
 
 enum DurationType {
   FIVE_MIN = '5m',
@@ -203,7 +200,36 @@ enum DurationType {
   SIX_HRS = '6hr',
   TWELVE_HRS = '12hr',
   TWENTY_FOUR_HRS = '24hr',
-  ONE_WEEK = '1week'
+  ONE_WEEK = '1week',
 }
 
-export { jwt, commonConstants, DurationType, WeightingScheme, CompetitionStatusType, RewardType, ParticipantStatusType, CryptoWeightState, CryptocaseType, Period, DomainType, VolatilityType, SortOrderType };
+export {
+  jwt,
+  commonConstants,
+  DurationType,
+  WeightingScheme,
+  CompetitionStatusType,
+  RewardType,
+  ParticipantStatusType,
+  CryptoWeightState,
+  CryptocaseType,
+  Period,
+  DomainType,
+  VolatilityType,
+  SortOrderType,
+};
+export enum TransactionType {
+  P2P = 'p2p',
+  DEPOSIT = 'deposit',
+  WITHDRAWAL = 'withdrawal',
+  BUY = 'buy',
+  SELL = 'sell',
+  NONE = 'none'
+}
+
+export enum TransactionStatus {
+  SUCCESS = 'success',
+  FAILED = 'failed',
+  PENDING = 'pending',
+  REJECTED = 'rejected',
+}

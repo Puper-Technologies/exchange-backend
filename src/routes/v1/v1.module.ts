@@ -7,7 +7,6 @@ import { CryptocoinsModule } from './cryptocoins/cryptocoins.module';
 import { ExpertCryptocasesModule } from './expert-cryptocase/expert-cryptocase.module';
 import { ExchangeModule } from './exchange/exchange.module';
 import { MongoModule } from '@resources/database/mongo.module';
-// import { CompetitionModule } from './competition/competition.module';
 
 const routes: Routes = [
   {
@@ -24,6 +23,14 @@ const routes: Routes = [
 ];
 
 @Module({
-  imports: [ RouterModule.forRoutes(routes), AuthModule, UsersModule, CryptocoinsModule, ExpertCryptocasesModule, ExchangeModule, CompetitionModule, MongoModule.forRoot() ],
+  imports: [
+    RouterModule.forRoutes(routes),
+    AuthModule,
+    UsersModule,
+    CryptocoinsModule,
+    ExpertCryptocasesModule,
+    ExchangeModule,
+    MongoModule.forRoot(),
+  ],
 })
 export default class V1Module {}

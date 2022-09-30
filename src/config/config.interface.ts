@@ -7,25 +7,24 @@ export interface DatabaseConfig {
 }
 
 export interface FirebaseConfig {
-  private_key: string,
-  client_email: string,
-  project_id: string,
-  databaseURL:string
+  private_key: string;
+  client_email: string;
+  project_id: string;
+  databaseURL: string;
 }
 
 export interface S3Config {
-  access_key_id: string, 
-  secret_access_key: string, 
-  region: string, 
-  bucket_name: string, 
-  dev_bucket_name: string 
+  access_key_id: string;
+  secret_access_key: string;
+  region: string;
+  bucket_name: string;
+  dev_bucket_name: string;
 }
 
 /**
  * Configuration data for the app.
  */
 export interface ConfigData {
-
   /** The port number of the http server to listen on. */
   port: number;
 
@@ -33,11 +32,11 @@ export interface ConfigData {
   hostname: string;
 
   /** Database configurations */
-  database: DatabaseConfig
+  database: DatabaseConfig;
 
   /** firebase configurations */
-  firebase: FirebaseConfig
+  firebase: FirebaseConfig;
 
   /** aws s3 configuration */
-  s3: S3Config
+  s3: S3Config;
 }

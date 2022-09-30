@@ -1,4 +1,15 @@
-import { Controller, Get, Param, Query, Post, Body, BadRequestException, UseFilters, UseInterceptors, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Query,
+  Post,
+  Body,
+  BadRequestException,
+  UseFilters,
+  UseInterceptors,
+  UseGuards,
+} from '@nestjs/common';
 import { ExchangeService } from './exchange.service';
 import { HttpService } from '@nestjs/axios';
 import { SymbolFilterDto } from './dto/symbol-filter.dto';
@@ -9,9 +20,19 @@ import ResponseUtil from '@utils/response.util';
 import { PaginationParamsInterface } from '@interfaces/pagination-params.interface';
 import PaginationUtil from '@utils/pagination.util';
 import { PaginatedTransactionInterface } from '@interfaces/paginated-users.interface';
-import { HttpExceptionFilter, MongoExceptionFilter } from '@filters/http-Exception.filter';
+import {
+  HttpExceptionFilter,
+  MongoExceptionFilter,
+} from '@filters/http-Exception.filter';
 import ResponseWrapInterceptor from '@interceptors/response-wrap.interceptor';
-import { ApiBearerAuth, ApiNotFoundResponse, ApiOkResponse, ApiTags, ApiUnauthorizedResponse, getSchemaPath } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+  getSchemaPath,
+} from '@nestjs/swagger';
 import { ExchangeInfo } from './entities/exchange-info.entity';
 import { UserExchangeAccountInfo } from './entities/user-exchange-account-info.entity';
 import { TickerPriceChangeStats } from './entities/ticker-price-change-stats.entity';
@@ -62,8 +83,8 @@ export class ExchangeController {
   // @Serialize(UserResponseEntity)
   // @UseGuards(JwtAccessGuard)
   @Get(':platform/info')
-  getExchangeInfo(@Param('platform') platform: string,symbol:string) {
-    return this.exchangeService.getExchangeInfo(platform,symbol);
+  getExchangeInfo(@Param('platform') platform: string, symbol: string) {
+    return this.exchangeService.getExchangeInfo(platform, symbol);
   }
 
   @ApiOkResponse({
@@ -97,7 +118,6 @@ export class ExchangeController {
     return await this.exchangeService.getUserAccountInfo(userId, exchangeName);
   }
 
-  
   @ApiOkResponse({
     schema: {
       type: 'object',
@@ -127,8 +147,11 @@ export class ExchangeController {
     @Param('platform') platform: string,
     @Query('symbol') symbol: string,
   ) {
-    console.log("symbol", symbol)
-    return await this.exchangeService.get24hrTickerPriceChangeStatistics(platform, symbol);
+    console.log('symbol', symbol);
+    return await this.exchangeService.get24hrTickerPriceChangeStatistics(
+      platform,
+      symbol,
+    );
   }
 
   @ApiOkResponse({
@@ -143,7 +166,8 @@ export class ExchangeController {
     description: '200. Success. Returns a user',
   })
   @ApiNotFoundResponse({
-    description: '404. NotFoundException. CurrentPrice for symbol was not found',
+    description:
+      '404. NotFoundException. CurrentPrice for symbol was not found',
   })
   @ApiUnauthorizedResponse({
     schema: {
@@ -154,7 +178,7 @@ export class ExchangeController {
     },
     description: '401. UnauthorizedException.',
   })
-  @Get(':platform/symbol/currentPrice')// check for multiple symbol
+  @Get(':platform/symbol/currentPrice') // check for multiple symbol
   async getSymbolCurrentPrice(
     @Param('platform') platform: string,
     @Query('symbol') symbol: string,
@@ -166,9 +190,7 @@ export class ExchangeController {
     schema: {
       type: 'object',
       properties: {
-        data: {
-          
-        },
+        data: {},
       },
     },
     description: '200. Successfilly subscribed the portfolio',
@@ -213,21 +235,24 @@ export class ExchangeController {
     );
   }
 
-
-
   @Get(':platform/transactions/:userId')
-  async getUserTransactionList(@Param('platform') platform: string,
-  @Param('userId') userId: string, @Query('page') page: any) {
-    const paginationParams: PaginationParamsInterface | false = PaginationUtil.normalizeParams(page);
+  async getUserTransactionList(
+    @Param('platform') platform: string,
+    @Param('userId') userId: string,
+    @Query('page') page: any,
+  ) {
+    const paginationParams: PaginationParamsInterface | false =
+      PaginationUtil.normalizeParams(page);
     if (!paginationParams) {
       throw new BadRequestException('Invalid pagination parameters');
     }
 
-    const paginatedUsers: PaginatedTransactionInterface = await this.exchangeService.getUserTransactionList(
-      platform,
-      new Types.ObjectId(userId),
-      paginationParams,
-    );
+    const paginatedUsers: PaginatedTransactionInterface =
+      await this.exchangeService.getUserTransactionList(
+        platform,
+        new Types.ObjectId(userId),
+        paginationParams,
+      );
 
     return ResponseUtil.success(
       'userTransactions',
@@ -244,20 +269,28 @@ export class ExchangeController {
   @Post('/:userid/subscribe/:caseId')
   async subscribeExpertPortfolio(
     @Param('userid') userId: string,
-    @Param('caseId') portfolioId: string) {
-    return await this.exchangeService.subscribeExpertPortfolio(new Types.ObjectId(userId), new Types.ObjectId(portfolioId))
+    @Param('caseId') portfolioId: string,
+  ) {
+    return await this.exchangeService.subscribeExpertPortfolio(
+      new Types.ObjectId(userId),
+      new Types.ObjectId(portfolioId),
+    );
   }
-
 
   @Get('/history/:exchange/:coinpair')
-  getHistoricalData(@Param('exchange') exchange: string, @Param('coinpair') coinpair: string, @Query('after') after: Date, @Query('before') before: Date , @Query('periods') periods: string ){
-    return this.exchangeService.getHistoricalExchangeData(exchange, coinpair, after, before, periods);
+  getHistoricalData(
+    @Param('exchange') exchange: string,
+    @Param('coinpair') coinpair: string,
+    @Query('after') after: Date,
+    @Query('before') before: Date,
+    @Query('periods') periods: string,
+  ) {
+    return this.exchangeService.getHistoricalExchangeData(
+      exchange,
+      coinpair,
+      after,
+      before,
+      periods,
+    );
   }
-
-
 }
-
-
-
-
-

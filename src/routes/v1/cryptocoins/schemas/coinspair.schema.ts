@@ -4,7 +4,6 @@ import { CreateCryptocoinDto } from '../dto/create-cryptocoin.dto';
 
 @Schema()
 export class CoinsPair {
-
   @Prop({
     required: true,
     type: CreateCryptocoinDto,

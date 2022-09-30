@@ -3,7 +3,6 @@ import { Document, Types } from 'mongoose';
 
 @Schema({ timestamps: true })
 export class Cryptocoin {
-
   @Prop({
     required: true,
     type: String,
@@ -13,7 +12,7 @@ export class Cryptocoin {
   @Prop({
     type: Number,
     default: 0,
-    required: false
+    required: false,
   })
   rank?;
 
@@ -54,7 +53,7 @@ export class Cryptocoin {
   @Prop({
     required: true,
     type: String,
-  }) 
+  })
   logo;
 
   @Prop({
@@ -65,7 +64,7 @@ export class Cryptocoin {
   @Prop({
     type: Number,
   })
-  circulatingSupply; 
+  circulatingSupply;
 
   @Prop({
     type: Number,
@@ -80,7 +79,7 @@ export class Cryptocoin {
   @Prop({
     type: Date,
   })
-  dateLaunched; 
+  dateLaunched;
 
   @Prop({
     required: true,

@@ -16,12 +16,17 @@ import { FirebaseAuthService } from '@resources/firebase/firebase.service';
     UsersModule,
     PassportModule,
     JwtModule.register({
-      secret: "This is test secret"
+      secret: 'This is test secret',
     }),
-    LoggerModule
+    LoggerModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtAccessStrategy,FirebaseAuthService],
-  exports:[AuthService]
+  providers: [
+    AuthService,
+    LocalStrategy,
+    JwtAccessStrategy,
+    FirebaseAuthService,
+  ],
+  exports: [AuthService],
 })
 export class AuthModule {}

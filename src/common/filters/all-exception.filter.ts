@@ -10,7 +10,10 @@ import { MyLogger } from '@shared/logger/logger.service';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
-  constructor(private readonly httpAdapterHost: HttpAdapterHost, private readonly logger: MyLogger) {
+  constructor(
+    private readonly httpAdapterHost: HttpAdapterHost,
+    private readonly logger: MyLogger,
+  ) {
     this.logger.setContext(AllExceptionsFilter.name);
   }
 

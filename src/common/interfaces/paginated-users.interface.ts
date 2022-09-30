@@ -7,30 +7,30 @@ import { User } from '@v1/users/schemas/user.schema';
 
 // Import all model from entity
 export interface PaginatedUsersInterface {
-  readonly paginatedResult: User[] | [],
-  readonly totalCount: number,
+  readonly paginatedResult: User[] | [];
+  readonly totalCount: number;
 }
 
 export interface PaginatedCryptocoinsInterface {
-  readonly paginatedResult: Cryptocoin[] | [],
-  readonly totalCount: number,
+  readonly paginatedResult: Cryptocoin[] | [];
+  readonly totalCount: number;
 }
 
 export interface PaginatedCoinsPairInterface {
-  readonly paginatedResult: CoinsPair[] | [],
-  readonly totalCount: number,
+  readonly paginatedResult: CoinsPair[] | [];
+  readonly totalCount: number;
 }
 
 export interface PaginatedExpertCryptocaseInterface {
-  readonly paginatedResult: ExpertCryptocase[] | [],
-  readonly totalCount: number,
+  readonly paginatedResult: ExpertCryptocase[] | [];
+  readonly totalCount: number;
 }
 export interface PaginatedCryptoWeightInterface {
-  readonly paginatedResult: CryptoWeight[] | [],
-  readonly totalCount: number,
+  readonly paginatedResult: CryptoWeight[] | [];
+  readonly totalCount: number;
 }
 
 export interface PaginatedTransactionInterface {
-  readonly paginatedResult: TransactionEntity[] | [],
-  readonly totalCount: number,
+  readonly paginatedResult: TransactionEntity[] | [];
+  readonly totalCount: number;
 }

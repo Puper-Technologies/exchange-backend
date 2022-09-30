@@ -1,13 +1,13 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { Types } from "mongoose";
-import { Cryptocoin } from "./cryptocoin.entity";
+import { ApiProperty } from '@nestjs/swagger';
+import { Types } from 'mongoose';
+import { Cryptocoin } from './cryptocoin.entity';
 
 export class CoinPair {
-    @ApiProperty({ type: String })
+  @ApiProperty({ type: String })
   _id?: Types.ObjectId = new Types.ObjectId();
 
-  @ApiProperty({ type: Cryptocoin})
-  cryptoCoin: Cryptocoin = {
+  @ApiProperty({ type: Cryptocoin })
+  cryptoCoin?: Cryptocoin = {
     name: String,
     rank: String,
     symbol: String,
@@ -23,12 +23,15 @@ export class CoinPair {
     tags: Array,
     dateLaunched: Date,
     category: String,
-    website: Array, 
-};
+    website: Array,
+  };
 
   @ApiProperty({ type: String })
-  quoteSymbol: string = '';
+  quoteSymbol = '';
+
+  @ApiProperty({type: String})
+  baseSymbol: '';
 
   @ApiProperty({ type: String })
-  symbolPair: string = '';
+  symbolPair = '';
 }

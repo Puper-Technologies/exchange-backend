@@ -1,8 +1,6 @@
-import { CompetitionStatusType } from '@config/constants'
+import { CompetitionStatusType } from '@config/constants';
 export class ScheduleCompetition {
-    
-    static scheduleCompetition(competitionId){
-        // change status of competition from publish to live
-        
-    }
+  static scheduleCompetition(competitionId) {
+    // change status of competition from publish to live
+  }
 }

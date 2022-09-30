@@ -14,20 +14,19 @@ import { ScheduleModule } from '@nestjs/schedule';
       isGlobal: true,
       cache: true,
       envFilePath: [`${process.env.NODE_ENV}.env`],
-      load: []
+      load: [],
     }),
     MongoModule.forRoot(),
     V1Module,
-    ScheduleModule.forRoot()
+    ScheduleModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [
     AppService,
     {
       provide: APP_INTERCEPTOR,
-      useClass: LoggingIntercepter
-    }
+      useClass: LoggingIntercepter,
+    },
   ],
 })
 export class AppModule {}
-

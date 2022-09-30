@@ -7,36 +7,38 @@ class Data {
   @Transform(({ value }) => value.toString(), { toPlainOnly: true })
   _id: ObjectId = new ObjectId();
 
-  name: string = '';
-  rank: number = 0;
-  symbol: string = '';
+  name = '';
+  rank = 0;
+  symbol = '';
 }
 
 export default class CryptocoinResponseEntity {
   @ValidateNested({ each: true })
   @Type(() => Data)
-  data?: [{
-    _id: ObjectId;
+  data?: [
+    {
+      _id: ObjectId;
 
-    name: string;
-    rank: number;
+      name: string;
+      rank: number;
 
-    symbol: string;
+      symbol: string;
+    },
+  ] = [
+    {
+      _id: new ObjectId(),
 
-  }] = [{
-    _id: new ObjectId(),
-
-    name: '',
-    rank: 0,
-    symbol: '',
-
-  }]
+      name: '',
+      rank: 0,
+      symbol: '',
+    },
+  ];
 
   collectionName?: string = '';
 
   options?: {
-    location: string,
-    paginationParams: PaginationParamsInterface,
-    totalCount: number,
-  }
+    location: string;
+    paginationParams: PaginationParamsInterface;
+    totalCount: number;
+  };
 }

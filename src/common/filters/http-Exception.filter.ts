@@ -22,9 +22,13 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const request = ctx.getRequest<FastifyRequest>();
     const status = exception.getStatus();
     const message = exception.message;
-    console.log(request.headers)
+    console.log(request.headers);
     // Change the method format or create a custom logger and use here
-    this.logger.error(`Error handled in Http exception filter ${JSON.stringify(exception.getResponse())}`);
+    this.logger.error(
+      `Error handled in Http exception filter ${JSON.stringify(
+        exception.getResponse(),
+      )}`,
+    );
     // this.logger.error(`${request.method} ${request.url} : ${message}`);
 
     response.status(status).send({
@@ -49,88 +53,100 @@ export class MongoExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse<FastifyReply>();
     const request = ctx.getRequest<FastifyRequest>();
 
-    this.logger.error(`Error handled in Mongo exception filter ${JSON.stringify(exception)}`);
+    this.logger.error(
+      `Error handled in Mongo exception filter ${JSON.stringify(exception)}`,
+    );
 
     let error = {
       statusCode: HttpStatus.NOT_FOUND,
-      message: "Unable to found exception"
-    }
+      message: 'Unable to found exception',
+    };
 
     // Need to enhance more
     switch (exception.code) {
       case 'DocumentNotFoundError': {
         error = {
           statusCode: HttpStatus.NOT_FOUND,
-          message: "Not Found the content"
-        }
+          message: 'Not Found the content',
+        };
         break;
       }
       case 'MongooseError': {
         error = {
           statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-          message: "Internal Error Occured while doing operations"
-        }
+          message: 'Internal Error Occured while doing operations',
+        };
         break;
       } // general Mongoose error
       case 'CastError': {
         error = {
           statusCode: HttpStatus.NOT_MODIFIED,
-          message: "Unable to cast the data"
-        }
+          message: 'Unable to cast the data',
+        };
         break;
       }
       case 'DisconnectedError': {
         error = {
           statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-          message: "Unable to establish Connection for operation"
-        }
+          message: 'Unable to establish Connection for operation',
+        };
         break;
       }
       case 'DivergentArrayError': {
         error = {
           statusCode: HttpStatus.NOT_ACCEPTABLE,
-          message: "Not Acceptable"
-        }
+          message: 'Not Acceptable',
+        };
         break;
       }
       case 'MissingSchemaError': {
         error = {
           statusCode: HttpStatus.NOT_ACCEPTABLE,
-          message: "Missing some data"
-        }
+          message: 'Missing some data',
+        };
         break;
       }
       case 'ValidatorError': {
         error = {
           statusCode: HttpStatus.BAD_REQUEST,
-          message: "Validator Error occurred"
-        }
+          message: 'Validator Error occurred',
+        };
         break;
       }
       case 'ValidationError': {
         error = {
           statusCode: HttpStatus.BAD_REQUEST,
-          message: "Validation Error occurred"
-        }
+          message: 'Validation Error occurred',
+        };
         break;
       }
-      case 'ObjectExpectedError': { break; }
-      case 'ObjectParameterError': { break; }
-      case 'OverwriteModelError': { break; }
+      case 'ObjectExpectedError': {
+        break;
+      }
+      case 'ObjectParameterError': {
+        break;
+      }
+      case 'OverwriteModelError': {
+        break;
+      }
       case 'ParallelSaveError': {
         error = {
           statusCode: HttpStatus.BAD_REQUEST,
-          message: "Multiple Operations not allowed"
-        }
+          message: 'Multiple Operations not allowed',
+        };
         break;
       }
-      case 'StrictModeError': { break; }
-      case 'VersionError': { break; }
+      case 'StrictModeError': {
+        break;
+      }
+      case 'VersionError': {
+        break;
+      }
       default: {
         error = {
           statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-          message: "Internal Error while performing Operations"
-        }
+          message: 'Internal Error while performing Operations',
+        };
         break;
       }
     }

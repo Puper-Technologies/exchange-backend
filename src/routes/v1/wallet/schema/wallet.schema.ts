@@ -1,39 +1,36 @@
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document, Types } from 'mongoose';
 
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Document, Types } from "mongoose";
-
-
-@Schema()
+@Schema({ timestamps: true })
 export class Wallet {
+  @Prop({
+    type: Types.ObjectId,
+    ref: 'User',
+    index: true,
+    required: true,
+  })
+  userId: Types.ObjectId; // owner of this wallet
 
-    @Prop({
-        type: Types.ObjectId,
-        ref: "User",
-        index: true,
-        required: true
-    })
-    userId: Types.ObjectId;   // owner of this wallet
+  @Prop({
+    type: Types.ObjectId,
+    ref: 'CryptoCoin',
+    required: true,
+  })
+  coinId: Types.ObjectId;
 
-    @Prop({
-        type: Types.ObjectId,
-        ref: "Coin",
-        required: true
-    })
-    coinId: Types.ObjectId; 
-
-    @Prop({
-        type: Number,
-        required: true,
-        default: 0
-    })
-    balance: number;
+  @Prop({
+    type: Number,
+    required: true,
+    default: 0,
+  })
+  balance: number;
 }
 
 export type WalletDocument = Wallet & Document;
 
 export const WalletSchema = SchemaFactory.createForClass(Wallet).set(
-    'versionKey',
-    false
-)
+  'versionKey',
+  false,
+);
 
-WalletSchema.index({userId:1, coinId: 1, }, { unique: true});
+WalletSchema.index({ userId: 1, coinId: 1 }, { unique: true });

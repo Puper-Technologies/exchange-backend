@@ -17,7 +17,7 @@ import { UsersModule } from '@v1/users/users.module';
   imports: [
     PassportModule,
     JwtModule.register({
-      secret: "This is test secret"
+      secret: 'This is test secret',
     }),
     HttpModule.registerAsync({
       useFactory: () => ({
@@ -35,10 +35,15 @@ import { UsersModule } from '@v1/users/users.module';
       },
     ]),
     LoggerModule,
-    UsersModule
+    UsersModule,
   ],
   controllers: [CryptocoinsController],
-  providers: [CryptocoinsService, CryptocoinRepository, CoinsPairRepository,FirebaseAuthService],
-  exports: [CryptocoinsService]
+  providers: [
+    CryptocoinsService,
+    CryptocoinRepository,
+    CoinsPairRepository,
+    FirebaseAuthService,
+  ],
+  exports: [CryptocoinsService],
 })
 export class CryptocoinsModule {}

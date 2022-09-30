@@ -1,10 +1,12 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class WalletRepository{
-    constructor(){}
+export class WalletRepository {
+  constructor() {}
 
-    async addMoneyInWallet(){
-        
-    }
+  async addMoneyInWallet() {}
+
+  async createWallet() {}
+
+  async updateWallet() {}
 }

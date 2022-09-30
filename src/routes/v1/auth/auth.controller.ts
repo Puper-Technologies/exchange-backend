@@ -1,4 +1,22 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, UseGuards, ForbiddenException, UseInterceptors, UnauthorizedException, Put, UseFilters, Headers, Req, } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpCode,
+  HttpStatus,
+  UseGuards,
+  ForbiddenException,
+  UseInterceptors,
+  UnauthorizedException,
+  Put,
+  UseFilters,
+  Headers,
+  Req,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 // import { CreateAuthDto } from './dto/create-auth.dto';
 // import { UpdateAuthDto } from './dto/update-auth.dto';
@@ -6,7 +24,20 @@ import { AuthService } from './auth.service';
 // import { OtpUserDto } from '@v1/users/dto/otp-user.dto';
 // import UserDto from '@v1/users/dto/user.dto';
 // import { SignUpDto } from '@v1/users/dto/sign-up.dto';
-import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiConflictResponse, ApiExtraModels, ApiInternalServerErrorResponse, ApiNoContentResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags, ApiUnauthorizedResponse, getSchemaPath } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiBody,
+  ApiConflictResponse,
+  ApiExtraModels,
+  ApiInternalServerErrorResponse,
+  ApiNoContentResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+  getSchemaPath,
+} from '@nestjs/swagger';
 import JwtTokensDto from './dto/jwt-token.dto';
 // import LocalAuthGuard from '@guards/auth.guard';
 // import JwtAccessGuard from '@guards/jwt-access.guard';
@@ -23,7 +54,10 @@ import { Roles, RolesEnum } from '@decorators/roles.decorator';
 import VerifyUserDto from './dto/verify-user.dto';
 import SendOtpUserDto from './dto/send-otp-user.dto';
 import ValidateOtpUserDto from './dto/validate-otp-user.dto';
-import { HttpExceptionFilter, MongoExceptionFilter } from '@filters/http-Exception.filter';
+import {
+  HttpExceptionFilter,
+  MongoExceptionFilter,
+} from '@filters/http-Exception.filter';
 import verifyUserDto from './dto/verify-user.dto';
 import { ParseToken } from './dto/refresh-token.dto';
 import { DoUserNotExist } from '@guards/do-not-user-exist.guard';
@@ -40,7 +74,7 @@ import { User } from '@v1/users/schemas/user.schema';
 @UseFilters(MongoExceptionFilter, HttpExceptionFilter)
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) { }
+  constructor(private readonly authService: AuthService) {}
 
   // @ApiBody({ type: SignUpDto })
   // @ApiOkResponse({
@@ -126,9 +160,8 @@ export class AuthController {
   //     }),
   //   );
   //   return response;
-    
-  // }
 
+  // }
 
   @ApiBearerAuth()
   @ApiBody({ type: SignUpFirebaseDto })
@@ -151,22 +184,20 @@ export class AuthController {
         error: true,
         statusCode: 400,
         timestamp: Date,
-        path: "req.url",
+        path: 'req.url',
         details: {
-            errorType: "ValidationError",
-            errors: [
-                {
-                    detail: "detail error message",
-                    source: {
-                        pointer: "attribute which has invalid data type"
-                    },
-                    meta: [
-                        "list of all validation exceptions solutions"
-                    ]
-                }
-            ]
-        }
-    },
+          errorType: 'ValidationError',
+          errors: [
+            {
+              detail: 'detail error message',
+              source: {
+                pointer: 'attribute which has invalid data type',
+              },
+              meta: ['list of all validation exceptions solutions'],
+            },
+          ],
+        },
+      },
     },
     description: '400. ValidationException',
   })
@@ -177,13 +208,13 @@ export class AuthController {
         error: true,
         statusCode: 400,
         timestamp: Date,
-        path: "req.url",
+        path: 'req.url',
         message: 'string',
         details: {
           statusCode: 500,
-          message: "Error message",
-          error: "Internal Server Error"
-      },
+          message: 'Error message',
+          error: 'Internal Server Error',
+        },
       },
     },
     description: '500. InternalServerError',
@@ -201,35 +232,41 @@ export class AuthController {
   @HttpCode(HttpStatus.CREATED)
   @Serialize(UserResponseEntity)
   @Post('signupfirebase')
-  async signUpFirebase(@Body() userDto : Partial<SignUpFirebaseDto>, @Req() request) {
-    const decodedToken :FirebaseDecodeResponse = request.decodedToken;
+  async signUpFirebase(
+    @Body() userDto: Partial<SignUpFirebaseDto>,
+    @Req() request,
+  ) {
+    const decodedToken: FirebaseDecodeResponse = request.decodedToken;
     const provider = decodedToken.sign_in_provider;
-    if(provider === SignInProvider.PHONE)
-    {
-      const user =  { ...userDto, authId:decodedToken.uid,  mobileNo:decodedToken.phone_number} ;
-      const newUser :UsersEntity = await this.authService.signUpUsingFirebase(user);
-      return ResponseUtils.success(
-        'user',
-        newUser
-      )
-    }else
-    {
-      const user :SignUpFirebaseDto =  { ...userDto, authId:decodedToken.uid,  email:decodedToken.email} as SignUpFirebaseDto;
-      const newUser :UsersEntity = await this.authService.signUpUsingFirebase(user) ;
-      
-      return ResponseUtils.success(
-        'user',
-        newUser
+    if (provider === SignInProvider.PHONE) {
+      const user = {
+        ...userDto,
+        authId: decodedToken.uid,
+        mobileNo: decodedToken.phone_number,
+      };
+      const newUser: UsersEntity = await this.authService.signUpUsingFirebase(
+        user,
       );
+      return ResponseUtils.success('user', newUser);
+    } else {
+      const user: SignUpFirebaseDto = {
+        ...userDto,
+        authId: decodedToken.uid,
+        email: decodedToken.email,
+      } as SignUpFirebaseDto;
+      const newUser: UsersEntity = await this.authService.signUpUsingFirebase(
+        user,
+      );
+
+      return ResponseUtils.success('user', newUser);
     }
- 
   }
 
-/**
- * Login route handler
- * @param loginAuthDto request body 
- * @returns 
- */
+  /**
+   * Login route handler
+   * @param loginAuthDto request body
+   * @returns
+   */
   // @ApiBody({ type: LoginAuthDto })
   // @ApiOkResponse({
   //   schema: {
@@ -299,7 +336,7 @@ export class AuthController {
   @ApiNoContentResponse({
     description: 'No content. 204',
   })
-  @ApiBody({type: verifyUserDto})
+  @ApiBody({ type: verifyUserDto })
   @ApiOkResponse({
     schema: {
       type: 'object',
@@ -328,22 +365,20 @@ export class AuthController {
         error: true,
         statusCode: 400,
         timestamp: Date,
-        path: "req.url",
+        path: 'req.url',
         details: {
-            errorType: "ValidationError",
-            errors: [
-                {
-                    detail: "detail error message",
-                    source: {
-                        pointer: "attribute which has invalid data type"
-                    },
-                    meta: [
-                        "list of all validation exceptions solutions"
-                    ]
-                }
-            ]
-        }
-    },
+          errorType: 'ValidationError',
+          errors: [
+            {
+              detail: 'detail error message',
+              source: {
+                pointer: 'attribute which has invalid data type',
+              },
+              meta: ['list of all validation exceptions solutions'],
+            },
+          ],
+        },
+      },
     },
     description: '400. ValidationException',
   })
@@ -354,13 +389,13 @@ export class AuthController {
         error: true,
         statusCode: 400,
         timestamp: Date,
-        path: "req.url",
+        path: 'req.url',
         message: 'string',
         details: {
           statusCode: 500,
-          message: "Error message",
-          error: "Internal Server Error"
-      },
+          message: 'Error message',
+          error: 'Internal Server Error',
+        },
       },
     },
     description: '500. InternalServerError',
@@ -368,8 +403,13 @@ export class AuthController {
   @ApiBearerAuth()
   @HttpCode(HttpStatus.OK)
   @Put('verifyuser')
-  async verifyUser(@Body() verifyUserDto: VerifyUserDto): Promise<SuccessResponseInterface | never> {
-    const newUser = await this.authService.verifyUser(verifyUserDto.email, true) as UsersEntity;
+  async verifyUser(
+    @Body() verifyUserDto: VerifyUserDto,
+  ): Promise<SuccessResponseInterface | never> {
+    const newUser = (await this.authService.verifyUser(
+      verifyUserDto.email,
+      true,
+    )) as UsersEntity;
     const response = ResponseUtils.success(
       'verified_user',
       new UsersEntity({
@@ -378,10 +418,10 @@ export class AuthController {
         mobileNo: newUser.mobileNo,
         email: newUser.email,
         role: newUser.role,
-        verified: true
+        verified: true,
       }),
     );
-    return response
+    return response;
   }
 
   // @ApiNoContentResponse({
@@ -444,7 +484,6 @@ export class AuthController {
   //     logout
   //   )
   // }
-
 
   // @ApiBody({ type: SendOtpUserDto })
   // @ApiOkResponse({
@@ -521,7 +560,7 @@ export class AuthController {
   // @HttpCode(HttpStatus.OK)
   // @Post('sendotp')
   // async sendLoginOtp(@Body() sendOtpUserDto: SendOtpUserDto) {
-  //   return ResponseUtils.success("otp", 
+  //   return ResponseUtils.success("otp",
   //   await this.authService.sendLoginOtp(sendOtpUserDto));
   // }
 
@@ -583,7 +622,6 @@ export class AuthController {
   //   await this.authService.validateOtp(validateOtpUserDto))
   // }
 
-
   @ApiOkResponse({
     type: ParseToken,
     description: '200, returns a decoded user from access token',
@@ -595,22 +633,20 @@ export class AuthController {
         error: true,
         statusCode: 400,
         timestamp: Date,
-        path: "req.url",
+        path: 'req.url',
         details: {
-            errorType: "ValidationError",
-            errors: [
-                {
-                    detail: "detail error message",
-                    source: {
-                        pointer: "attribute which has invalid data type"
-                    },
-                    meta: [
-                        "list of all validation exceptions solutions"
-                    ]
-                }
-            ]
-        }
-    },
+          errorType: 'ValidationError',
+          errors: [
+            {
+              detail: 'detail error message',
+              source: {
+                pointer: 'attribute which has invalid data type',
+              },
+              meta: ['list of all validation exceptions solutions'],
+            },
+          ],
+        },
+      },
     },
     description: '400. ValidationException',
   })
@@ -618,15 +654,15 @@ export class AuthController {
     schema: {
       type: 'object',
       example: {
-      error: true,
+        error: true,
         statusCode: 401,
         timestamp: Date,
-        path: "/api/v1/auth/token",
+        path: '/api/v1/auth/token',
         details: {
-            statusCode: 401,
-            message: "Unauthorized"
-        }
-    },
+          statusCode: 401,
+          message: 'Unauthorized',
+        },
+      },
     },
     description: 'Token has been expired',
   })
@@ -637,13 +673,13 @@ export class AuthController {
         error: true,
         statusCode: 400,
         timestamp: Date,
-        path: "req.url",
+        path: 'req.url',
         message: 'string',
         details: {
           statusCode: 500,
-          message: "Error message",
-          error: "Internal Server Error"
-      },
+          message: 'Error message',
+          error: 'Internal Server Error',
+        },
       },
     },
     description: '500. InternalServerError',
@@ -652,15 +688,10 @@ export class AuthController {
   @ApiBearerAuth()
   @UseGuards(AuthenticationGuard)
   @Get('token')
-  async getUserByAccessToken( @AuthenticatedUser() user) : Promise<any> {
-    
-    return ResponseUtils.success(
-      'user',
-      new UsersEntity(user)
-    )
+  async getUserByAccessToken(@AuthenticatedUser() user): Promise<any> {
+    return ResponseUtils.success('user', new UsersEntity(user));
   }
 
-  
   @ApiOkResponse({
     type: String,
     description: '200, returns a user from authId',
@@ -672,22 +703,20 @@ export class AuthController {
         error: true,
         statusCode: 400,
         timestamp: Date,
-        path: "req.url",
+        path: 'req.url',
         details: {
-            errorType: "ValidationError",
-            errors: [
-                {
-                    detail: "detail error message",
-                    source: {
-                        pointer: "attribute which has invalid data type"
-                    },
-                    meta: [
-                        "list of all validation exceptions solutions"
-                    ]
-                }
-            ]
-        }
-    },
+          errorType: 'ValidationError',
+          errors: [
+            {
+              detail: 'detail error message',
+              source: {
+                pointer: 'attribute which has invalid data type',
+              },
+              meta: ['list of all validation exceptions solutions'],
+            },
+          ],
+        },
+      },
     },
     description: '400. ValidationException',
   })
@@ -695,15 +724,15 @@ export class AuthController {
     schema: {
       type: 'object',
       example: {
-      error: true,
+        error: true,
         statusCode: 401,
         timestamp: Date,
-        path: "/api/v1/auth/authId",
+        path: '/api/v1/auth/authId',
         details: {
-            statusCode: 401,
-            message: "Unauthorized"
-        }
-    },
+          statusCode: 401,
+          message: 'Unauthorized',
+        },
+      },
     },
     description: 'Token has been expired',
   })
@@ -714,13 +743,13 @@ export class AuthController {
         error: true,
         statusCode: 400,
         timestamp: Date,
-        path: "req.url",
+        path: 'req.url',
         message: 'string',
         details: {
           statusCode: 500,
-          message: "Error message",
-          error: "Internal Server Error"
-      },
+          message: 'Error message',
+          error: 'Internal Server Error',
+        },
       },
     },
     description: '500. InternalServerError',
@@ -729,9 +758,10 @@ export class AuthController {
   @ApiBearerAuth()
   @UseGuards(AuthenticationGuard)
   @Get('authid/:authId')
-  async getUserByAuthId(@Param('authId') authId: string) : Promise<any> {
-    const user = await this.authService.fetchUserByAuthId(authId) as UsersEntity;
-    return ResponseUtils.success('user',user );
+  async getUserByAuthId(@Param('authId') authId: string): Promise<any> {
+    const user = (await this.authService.fetchUserByAuthId(
+      authId,
+    )) as UsersEntity;
+    return ResponseUtils.success('user', user);
   }
-
 }

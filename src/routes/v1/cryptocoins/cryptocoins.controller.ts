@@ -1,4 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException, UseInterceptors, HttpCode, HttpStatus, UseFilters, Query, BadRequestException, UseGuards, InternalServerErrorException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  NotFoundException,
+  UseInterceptors,
+  HttpCode,
+  HttpStatus,
+  UseFilters,
+  Query,
+  BadRequestException,
+  UseGuards,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { CryptocoinsService } from './cryptocoins.service';
 import { CreateCryptocoinPairDto } from './dto/create-cryptocoin-pair.dto';
 import { CreateCryptocoinDto } from './dto/create-cryptocoin.dto';
@@ -6,10 +21,27 @@ import { CreateCryptocoinDto } from './dto/create-cryptocoin.dto';
 import ResponseUtil from '@utils/response.util';
 import CryptocoinResponseEntity from './entities/cryptocoin-response.entity';
 import { Cryptocoin } from './entities/cryptocoin.entity';
-import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiConflictResponse, ApiExtraModels, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiQuery, ApiTags, ApiUnauthorizedResponse, getSchemaPath } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiBody,
+  ApiConflictResponse,
+  ApiExtraModels,
+  ApiInternalServerErrorResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiParam,
+  ApiQuery,
+  ApiTags,
+  ApiUnauthorizedResponse,
+  getSchemaPath,
+} from '@nestjs/swagger';
 import ResponseWrapInterceptor from '@interceptors/response-wrap.interceptor';
 import Serialize from '@decorators/serialization.decorator';
-import { HttpExceptionFilter, MongoExceptionFilter } from '@filters/http-Exception.filter';
+import {
+  HttpExceptionFilter,
+  MongoExceptionFilter,
+} from '@filters/http-Exception.filter';
 import { PaginationParamsInterface } from '@interfaces/pagination-params.interface';
 import PaginationUtil from '@utils/pagination.util';
 import { PaginatedCryptocoinsInterface } from '@interfaces/paginated-users.interface';
@@ -22,7 +54,6 @@ import { CoinPair } from './entities/coin-pair.entity';
 import { AuthenticationGuard } from '@guards/authentication.guard';
 import { Platform } from '@config/constants';
 
-
 @ApiTags('cryptocoins')
 @ApiBearerAuth()
 @UseInterceptors(ResponseWrapInterceptor)
@@ -33,7 +64,7 @@ import { Platform } from '@config/constants';
 // @Roles(RolesEnum.ADMIN, RolesEnum.EXPERT)
 @Controller('cryptocoins')
 export class CryptocoinsController {
-  constructor(private readonly cryptocoinsService: CryptocoinsService) { }
+  constructor(private readonly cryptocoinsService: CryptocoinsService) {}
 
   // addCryptoCurrency
   @ApiBody({ type: CreateCryptocoinDto })
@@ -83,16 +114,17 @@ export class CryptocoinsController {
   @HttpCode(HttpStatus.CREATED)
   @Serialize(CryptocoinResponseEntity)
   @Post()
-  async addCryptoCoin(@Body() createCryptocoinDto: Partial<CreateCryptocoinDto>): Promise<CryptocoinResponseEntity> {
-    const newCoin = await this.cryptocoinsService.addCryptoCurrency(createCryptocoinDto);
+  async addCryptoCoin(
+    @Body() createCryptocoinDto: Partial<CreateCryptocoinDto>,
+  ): Promise<CryptocoinResponseEntity> {
+    const newCoin = await this.cryptocoinsService.addCryptoCurrency(
+      createCryptocoinDto,
+    );
     if (!newCoin) {
       throw new NotFoundException('Unable to create new Crypto coin');
     }
 
-    return ResponseUtil.success(
-      'cryptocoins',
-      newCoin,
-    );
+    return ResponseUtil.success('cryptocoins', newCoin);
   }
 
   // @ApiBody({ type: CreateCryptocoinDto })
@@ -141,27 +173,37 @@ export class CryptocoinsController {
   })
   @HttpCode(HttpStatus.CREATED)
   @Serialize(CryptocoinResponseEntity)
-  @Post("/:exchange")
-  async addPlatformCryptoCoin(@Param('exchange') exchange: string, @Query('qsymbol') quoteSymbol: string, @Query('cmcKey') cmcKey: string): Promise<CryptocoinResponseEntity> {
-
-    const cryptoExchange = Platform[exchange.toUpperCase()] || null
+  @Post('/:exchange')
+  async addPlatformCryptoCoin(
+    @Param('exchange') exchange: string,
+    @Query('qsymbol') quoteSymbol: string,
+    @Query('cmcKey') cmcKey: string,
+  ): Promise<CryptocoinResponseEntity> {
+    const cryptoExchange = Platform[exchange.toUpperCase()] || null;
     // console.log(`exchange name `, exchange, platform[exchange.toUpperCase()], cryptoExchange)
     if (cryptoExchange === null) {
-      throw new NotFoundException(`Currently we don't support exchange ${exchange}`);
+      throw new NotFoundException(
+        `Currently we don't support exchange ${exchange}`,
+      );
     }
 
-    const exchangeSupportedCoins = await this.cryptocoinsService.addExchangeCryptoCurrencies(cryptoExchange, quoteSymbol, cmcKey);
+    const exchangeSupportedCoins =
+      await this.cryptocoinsService.addExchangeCryptoCurrencies(
+        cryptoExchange,
+        quoteSymbol,
+        cmcKey,
+      );
     if (!exchangeSupportedCoins) {
-      throw new NotFoundException(`Unable to Add crypto coins for exchange ${cryptoExchange} try it manually`);
+      throw new NotFoundException(
+        `Unable to Add crypto coins for exchange ${cryptoExchange} try it manually`,
+      );
     }
 
-    return ResponseUtil.success(
-      'cryptocoins',
-      {"message": `successfully added crypto currencies for exchange ${cryptoExchange}`,
-        "status": "SUCCESS",
-        "count": exchangeSupportedCoins
-      },
-    );
+    return ResponseUtil.success('cryptocoins', {
+      message: `successfully added crypto currencies for exchange ${cryptoExchange}`,
+      status: 'SUCCESS',
+      count: exchangeSupportedCoins,
+    });
   }
 
   // - /getCryptoCurrencyList
@@ -188,51 +230,58 @@ export class CryptocoinsController {
   @Get()
   @Serialize(CryptocoinResponseEntity)
   @ApiQuery({
-    name: "search",
+    name: 'search',
     type: String,
-    description: "Coin name or symbol",
-    required: false
+    description: 'Coin name or symbol',
+    required: false,
   })
   @ApiQuery({
-    name: "qsymbol",
+    name: 'qsymbol',
     type: String,
-    description: "Quote symbol for coin for which price need to be shown",
-    required: true
+    description: 'Quote symbol for coin for which price need to be shown',
+    required: true,
   })
   @ApiQuery({
-    name: "page",
+    name: 'page',
     type: String,
-    description: "pass the page no to retrieve specific page data",
-    required: false
+    description: 'pass the page no to retrieve specific page data',
+    required: false,
   })
   @ApiQuery({
-    name: "limit",
+    name: 'limit',
     type: String,
-    description: "No of records required",
-    required: false
+    description: 'No of records required',
+    required: false,
   })
-  async findAllCryptoCoins(@Query('qsymbol') quoteSymbol : string,@Query('search') search : string, @Query('page') pageNo: string, @Query('limit') limit?: string): Promise<CryptocoinResponseEntity> {
-    const pageQuery ={
-      number: pageNo || "1",
-      limit: "10",
-      size: limit || "10"
-    }
-    const paginationParams: PaginationParamsInterface | false = PaginationUtil.normalizeParams(pageQuery);
+  async findAllCryptoCoins(
+    @Query('qsymbol') quoteSymbol: string,
+    @Query('search') search: string,
+    @Query('page') pageNo: string,
+    @Query('limit') limit?: string,
+  ): Promise<CryptocoinResponseEntity> {
+    const pageQuery = {
+      number: pageNo || '1',
+      limit: '10',
+      size: limit || '10',
+    };
+    const paginationParams: PaginationParamsInterface | false =
+      PaginationUtil.normalizeParams(pageQuery);
     if (!paginationParams) {
       throw new BadRequestException('Invalid pagination parameters');
     }
 
-    const paginatedUsers: PaginatedCryptocoinsInterface = await this.cryptocoinsService.findAllCryptoCoins(quoteSymbol, search, paginationParams);
-
-    return ResponseUtil.success(
-      'cryptocoins',
-      paginatedUsers.paginatedResult,
-      {
-        location: 'api/v1/cryptocoins',
+    const paginatedUsers: PaginatedCryptocoinsInterface =
+      await this.cryptocoinsService.findAllCryptoCoins(
+        quoteSymbol,
+        search,
         paginationParams,
-        totalCount: paginatedUsers.totalCount,
-      },
-    );
+      );
+
+    return ResponseUtil.success('cryptocoins', paginatedUsers.paginatedResult, {
+      location: 'api/v1/cryptocoins',
+      paginationParams,
+      totalCount: paginatedUsers.totalCount,
+    });
   }
 
   // - /getCryptoCurrencyById
@@ -258,21 +307,19 @@ export class CryptocoinsController {
         error: true,
         statusCode: 400,
         timestamp: Date,
-        path: "req.url",
+        path: 'req.url',
         details: {
-          errorType: "ValidationError",
+          errorType: 'ValidationError',
           errors: [
             {
-              detail: "detail error message",
+              detail: 'detail error message',
               source: {
-                pointer: "attribute which has invalid data type"
+                pointer: 'attribute which has invalid data type',
               },
-              meta: [
-                "list of all validation exceptions solutions"
-              ]
-            }
-          ]
-        }
+              meta: ['list of all validation exceptions solutions'],
+            },
+          ],
+        },
       },
     },
     description: '400. ValidationException',
@@ -284,11 +331,11 @@ export class CryptocoinsController {
         error: true,
         statusCode: 401,
         timestamp: Date,
-        path: "/api/v1/cryptocoins/:cryptocoinId",
+        path: '/api/v1/cryptocoins/:cryptocoinId',
         details: {
           statusCode: 401,
-          message: "Unauthorized"
-        }
+          message: 'Unauthorized',
+        },
       },
     },
     description: 'Token has been expired',
@@ -300,12 +347,12 @@ export class CryptocoinsController {
         error: true,
         statusCode: 400,
         timestamp: Date,
-        path: "req.url",
+        path: 'req.url',
         message: 'string',
         details: {
           statusCode: 500,
-          message: "Error message",
-          error: "Internal Server Error"
+          message: 'Error message',
+          error: 'Internal Server Error',
         },
       },
     },
@@ -314,15 +361,14 @@ export class CryptocoinsController {
   @Get('/:id')
   async findCryptoCoinById(@Param('id') id: string) {
     // Need to enhance by checking verified
-    const cryptocoin = await this.cryptocoinsService.findCryptoCoinById(new Types.ObjectId(id));
+    const cryptocoin = await this.cryptocoinsService.findCryptoCoinById(
+      new Types.ObjectId(id),
+    );
     if (!cryptocoin) {
       throw new NotFoundException(`Not Found crypto with id ${id}`);
     }
 
-    return ResponseUtil.success(
-      'cryptocoin',
-      cryptocoin,
-    );
+    return ResponseUtil.success('cryptocoin', cryptocoin);
   }
 
   // - /getCryptoCurrencyBySymbol
@@ -347,21 +393,19 @@ export class CryptocoinsController {
         error: true,
         statusCode: 400,
         timestamp: Date,
-        path: "req.url",
+        path: 'req.url',
         details: {
-          errorType: "ValidationError",
+          errorType: 'ValidationError',
           errors: [
             {
-              detail: "detail error message",
+              detail: 'detail error message',
               source: {
-                pointer: "attribute which has invalid data type"
+                pointer: 'attribute which has invalid data type',
               },
-              meta: [
-                "list of all validation exceptions solutions"
-              ]
-            }
-          ]
-        }
+              meta: ['list of all validation exceptions solutions'],
+            },
+          ],
+        },
       },
     },
     description: '400. ValidationException',
@@ -373,11 +417,11 @@ export class CryptocoinsController {
         error: true,
         statusCode: 401,
         timestamp: Date,
-        path: "/api/v1/auth/logout",
+        path: '/api/v1/auth/logout',
         details: {
           statusCode: 401,
-          message: "Unauthorized"
-        }
+          message: 'Unauthorized',
+        },
       },
     },
     description: 'Token has been expired',
@@ -389,12 +433,12 @@ export class CryptocoinsController {
         error: true,
         statusCode: 400,
         timestamp: Date,
-        path: "req.url",
+        path: 'req.url',
         message: 'string',
         details: {
           statusCode: 500,
-          message: "Error message",
-          error: "Internal Server Error"
+          message: 'Error message',
+          error: 'Internal Server Error',
         },
       },
     },
@@ -403,15 +447,14 @@ export class CryptocoinsController {
   @Get('/symbol/:symbol')
   async findCryptoCoinsBySymbol(@Param('symbol') symbol: string) {
     // Need to enhance by checking verified
-    const cryptocoin = await this.cryptocoinsService.findCryptoCoinsBySymbol(symbol);
+    const cryptocoin = await this.cryptocoinsService.findCryptoCoinsBySymbol(
+      symbol,
+    );
     if (!cryptocoin) {
       throw new NotFoundException(`Not Found crypto with symbol ${symbol}`);
     }
 
-    return ResponseUtil.success(
-      'cryptocoin',
-      cryptocoin,
-    );
+    return ResponseUtil.success('cryptocoin', cryptocoin);
   }
 
   // - /addCurrencyPair
@@ -437,21 +480,19 @@ export class CryptocoinsController {
         error: true,
         statusCode: 400,
         timestamp: Date,
-        path: "req.url",
+        path: 'req.url',
         details: {
-          errorType: "ValidationError",
+          errorType: 'ValidationError',
           errors: [
             {
-              detail: "detail error message",
+              detail: 'detail error message',
               source: {
-                pointer: "attribute which has invalid data type"
+                pointer: 'attribute which has invalid data type',
               },
-              meta: [
-                "list of all validation exceptions solutions"
-              ]
-            }
-          ]
-        }
+              meta: ['list of all validation exceptions solutions'],
+            },
+          ],
+        },
       },
     },
     description: '400. ValidationException',
@@ -463,11 +504,11 @@ export class CryptocoinsController {
         error: true,
         statusCode: 401,
         timestamp: Date,
-        path: "/api/v1/auth/logout",
+        path: '/api/v1/auth/logout',
         details: {
           statusCode: 401,
-          message: "Unauthorized"
-        }
+          message: 'Unauthorized',
+        },
       },
     },
     description: 'Token has been expired',
@@ -479,12 +520,12 @@ export class CryptocoinsController {
         error: true,
         statusCode: 400,
         timestamp: Date,
-        path: "req.url",
+        path: 'req.url',
         message: 'string',
         details: {
           statusCode: 500,
-          message: "Error message",
-          error: "Internal Server Error"
+          message: 'Error message',
+          error: 'Internal Server Error',
         },
       },
     },
@@ -492,15 +533,14 @@ export class CryptocoinsController {
   })
   @Post('/coinpair')
   async addCoinsPair(@Body() createCryptocoinPairDto: CreateCryptocoinPairDto) {
-    const coinsPair = await this.cryptocoinsService.addCoinsPair(createCryptocoinPairDto);
+    const coinsPair = await this.cryptocoinsService.addCoinsPair(
+      createCryptocoinPairDto,
+    );
     if (!coinsPair) {
       throw new NotFoundException('Unable to create new coin pair');
     }
 
-    return ResponseUtil.success(
-      'coinpair',
-      coinsPair,
-    );
+    return ResponseUtil.success('coinpair', coinsPair);
   }
 
   // @Get('/coinpair')
@@ -538,21 +578,19 @@ export class CryptocoinsController {
         error: true,
         statusCode: 400,
         timestamp: Date,
-        path: "req.url",
+        path: 'req.url',
         details: {
-          errorType: "ValidationError",
+          errorType: 'ValidationError',
           errors: [
             {
-              detail: "detail error message",
+              detail: 'detail error message',
               source: {
-                pointer: "attribute which has invalid data type"
+                pointer: 'attribute which has invalid data type',
               },
-              meta: [
-                "list of all validation exceptions solutions"
-              ]
-            }
-          ]
-        }
+              meta: ['list of all validation exceptions solutions'],
+            },
+          ],
+        },
       },
     },
     description: '400. ValidationException',
@@ -564,11 +602,11 @@ export class CryptocoinsController {
         error: true,
         statusCode: 401,
         timestamp: Date,
-        path: "/api/v1/auth/logout",
+        path: '/api/v1/auth/logout',
         details: {
           statusCode: 401,
-          message: "Unauthorized"
-        }
+          message: 'Unauthorized',
+        },
       },
     },
     description: 'Token has been expired',
@@ -580,30 +618,36 @@ export class CryptocoinsController {
         error: true,
         statusCode: 400,
         timestamp: Date,
-        path: "req.url",
+        path: 'req.url',
         message: 'string',
         details: {
           statusCode: 500,
-          message: "Error message",
-          error: "Internal Server Error"
+          message: 'Error message',
+          error: 'Internal Server Error',
         },
       },
     },
     description: '500. InternalServerError',
   })
   @Get('/coinpair/:basesymbol/:quotesymbol')
-  async findCoinsPairByBaseSymbolAndQuoteSymbol(@Param('basesymbol') baseSymbol: string, @Param('quotesymbol') quoteSymbol: string) {
-    const coinPair = await this.cryptocoinsService.findCoinsPairByBaseSymbolAndQuoteSymbol(baseSymbol, quoteSymbol);
+  async findCoinsPairByBaseSymbolAndQuoteSymbol(
+    @Param('basesymbol') baseSymbol: string,
+    @Param('quotesymbol') quoteSymbol: string,
+  ) {
+    const coinPair =
+      await this.cryptocoinsService.findCoinsPairByBaseSymbolAndQuoteSymbol(
+        baseSymbol,
+        quoteSymbol,
+      );
     if (!coinPair) {
-      throw new NotFoundException(`Not Found coin pair with basesymbol ${baseSymbol} and quoteSymbol ${quoteSymbol}`);
+      throw new NotFoundException(
+        `Not Found coin pair with basesymbol ${baseSymbol} and quoteSymbol ${quoteSymbol}`,
+      );
     }
 
-    return ResponseUtil.success(
-      'coinpair',
-      coinPair,
-    );
+    return ResponseUtil.success('coinpair', coinPair);
   }
-  
+
   // - /getCoinsPairByBaseSymbol
   @ApiOkResponse({
     schema: {
@@ -626,21 +670,19 @@ export class CryptocoinsController {
         error: true,
         statusCode: 400,
         timestamp: Date,
-        path: "req.url",
+        path: 'req.url',
         details: {
-          errorType: "ValidationError",
+          errorType: 'ValidationError',
           errors: [
             {
-              detail: "detail error message",
+              detail: 'detail error message',
               source: {
-                pointer: "attribute which has invalid data type"
+                pointer: 'attribute which has invalid data type',
               },
-              meta: [
-                "list of all validation exceptions solutions"
-              ]
-            }
-          ]
-        }
+              meta: ['list of all validation exceptions solutions'],
+            },
+          ],
+        },
       },
     },
     description: '400. ValidationException',
@@ -652,11 +694,11 @@ export class CryptocoinsController {
         error: true,
         statusCode: 401,
         timestamp: Date,
-        path: "/api/v1/auth/logout",
+        path: '/api/v1/auth/logout',
         details: {
           statusCode: 401,
-          message: "Unauthorized"
-        }
+          message: 'Unauthorized',
+        },
       },
     },
     description: 'Token has been expired',
@@ -668,12 +710,12 @@ export class CryptocoinsController {
         error: true,
         statusCode: 400,
         timestamp: Date,
-        path: "req.url",
+        path: 'req.url',
         message: 'string',
         details: {
           statusCode: 500,
-          message: "Error message",
-          error: "Internal Server Error"
+          message: 'Error message',
+          error: 'Internal Server Error',
         },
       },
     },
@@ -706,21 +748,19 @@ export class CryptocoinsController {
         error: true,
         statusCode: 400,
         timestamp: Date,
-        path: "req.url",
+        path: 'req.url',
         details: {
-          errorType: "ValidationError",
+          errorType: 'ValidationError',
           errors: [
             {
-              detail: "detail error message",
+              detail: 'detail error message',
               source: {
-                pointer: "attribute which has invalid data type"
+                pointer: 'attribute which has invalid data type',
               },
-              meta: [
-                "list of all validation exceptions solutions"
-              ]
-            }
-          ]
-        }
+              meta: ['list of all validation exceptions solutions'],
+            },
+          ],
+        },
       },
     },
     description: '400. ValidationException',
@@ -732,11 +772,11 @@ export class CryptocoinsController {
         error: true,
         statusCode: 401,
         timestamp: Date,
-        path: "/api/v1/auth/logout",
+        path: '/api/v1/auth/logout',
         details: {
           statusCode: 401,
-          message: "Unauthorized"
-        }
+          message: 'Unauthorized',
+        },
       },
     },
     description: 'Token has been expired',
@@ -748,12 +788,12 @@ export class CryptocoinsController {
         error: true,
         statusCode: 400,
         timestamp: Date,
-        path: "req.url",
+        path: 'req.url',
         message: 'string',
         details: {
           statusCode: 500,
-          message: "Error message",
-          error: "Internal Server Error"
+          message: 'Error message',
+          error: 'Internal Server Error',
         },
       },
     },

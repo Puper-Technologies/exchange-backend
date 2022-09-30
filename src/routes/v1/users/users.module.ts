@@ -16,7 +16,7 @@ import { FirebaseAuthService } from '@resources/firebase/firebase.service';
   imports: [
     PassportModule,
     JwtModule.register({
-      secret: "This is test secret"
+      secret: 'This is test secret',
     }),
     MongooseModule.forFeature([
       {
@@ -27,7 +27,7 @@ import { FirebaseAuthService } from '@resources/firebase/firebase.service';
     LoggerModule,
   ],
   controllers: [UsersController],
-  providers: [UsersService, UsersRepository,FirebaseAuthService],
-  exports: [UsersService]
+  providers: [UsersService, UsersRepository, FirebaseAuthService],
+  exports: [UsersService],
 })
 export class UsersModule {}
