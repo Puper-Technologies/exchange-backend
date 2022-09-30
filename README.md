@@ -1,4 +1,4 @@
-# cryptocase-server
+# Exchange-server
 
 sudo ssh -i cryptocase.pem ubuntu@3.111.46.13
 
