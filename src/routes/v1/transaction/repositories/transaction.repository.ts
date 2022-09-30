@@ -7,11 +7,10 @@ export class TransactionRepository {
     constructor(@InjectModel(Transaction.name) private readonly transactionModel: Model<TransactionDocument>){}
 
     async createTransaction(){
-
     }
 
     async updateTransaction(){
-
+        
     }
 
     

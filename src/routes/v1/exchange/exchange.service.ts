@@ -1,7 +1,5 @@
-import { CRYPTO_DATA, Platform, TransactionType } from '@config/constants';
+import { CRYPTO_DATA } from '@config/constants';
 import {
-  forwardRef,
-  Inject,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -9,10 +7,7 @@ import {
 import { MyLogger } from '@shared/logger/logger.service';
 import { UsersService } from '@v1/users/users.service';
 import Helper from '@utils/helper.util';
-import { HttpService } from '@nestjs/axios';
 import * as lodash from 'lodash';
-import { map } from 'rxjs/operators';
-import { SymbolFilterDto } from './dto/symbol-filter.dto';
 import { CreateNewOrderDto } from './dto/create-order.dto';
 import ExchangeRepository from './repositories/exchange.repository';
 import { Types } from 'mongoose';
@@ -22,11 +17,7 @@ import { TransactionRepository } from './repositories/transaction.repository';
 import { PaginationParamsInterface } from '@interfaces/pagination-params.interface';
 import { PaginatedTransactionInterface } from '@interfaces/paginated-users.interface';
 import UsersEntity from '@v1/users/entities/user.entity';
-import { ExpertCryptocasesService } from '@v1/expert-cryptocase/expert-cryptocase.service';
-import { ExpertCryptocase } from '@v1/expert-cryptocase/entities/expert-cryptocase.entity';
 import { UserExchangeAccountInfo } from './entities/user-exchange-account-info.entity';
-import { Balance } from './entities/balance.entity';
-import { CryptoWeight } from '@v1/expert-cryptocase/entities/crypto-weight.entity';
 import { CryptocoinsService } from '@v1/cryptocoins/cryptocoins.service';
 import { CurrentPrice } from './entities/current-price.entity';
 import { NewOrderResponse } from './entities/new-order-response.entity';
@@ -34,8 +25,6 @@ import { NewOrderResponse } from './entities/new-order-response.entity';
 @Injectable()
 export class ExchangeService {
   constructor(
-    @Inject(forwardRef(() => ExpertCryptocasesService))
-    private readonly expertCryptocase: ExpertCryptocasesService,
     private readonly userService: UsersService,
     private readonly cryptoCoinsService: CryptocoinsService,
     private logger: MyLogger,
@@ -114,15 +103,11 @@ export class ExchangeService {
     )) as CurrentPrice[];
   }
 
-<<<<<<< HEAD
   async createNewOrder(
     userId: string,
     platform: string,
     createNewOrder: CreateNewOrderDto,
   ): Promise<NewOrderResponse> {
-=======
-  async createNewOrder(userId: string, platform: string, createNewOrder: CreateNewOrderDto): Promise<NewOrderResponse> {
->>>>>>> 89d90e7cb2685d630f18518a3b9e2e78a77de412
     try {
       const { symbol, side, type, quantity, quoteOrderQty, newOrderResp } =
         createNewOrder;
@@ -193,143 +178,143 @@ export class ExchangeService {
     return this.transactionRepository.createNewUserTransaction(newTransaction);
   }
 
-  async getUserTransactionList(
-    platform: string,
-    userId: Types.ObjectId,
-    options: PaginationParamsInterface,
-  ): Promise<PaginatedTransactionInterface> {
-    return await this.transactionRepository.getUserTransactionList(
-      platform,
-      userId,
-      options,
-    );
-  }
+  // async getUserTransactionList(
+  //   platform: string,
+  //   userId: Types.ObjectId,
+  //   options: PaginationParamsInterface,
+  // ): Promise<PaginatedTransactionInterface> {
+  //   return await this.transactionRepository.getUserTransactionList(
+  //     platform,
+  //     userId,
+  //     options,
+  //   );
+  // }
 
   // *******************Portfolio subscription****************
-  async subscribeExpertPortfolio(
-    userId: Types.ObjectId,
-    cryptocaseId: Types.ObjectId,
-  ) {
-    try {
-      // Find user with userId
-      const user: UsersEntity = await this.userService.getVerifiedUserById(
-        userId,
-      );
-      if (!user) {
-        throw new NotFoundException(
-          `Unable to find verified user with id ${userId}`,
-        );
-      }
-      // get platform api credentials
-      const platformApiCredentials = lodash.find(user.exchange, {
-        exchangeName: Platform.BINANCE,
-      });
-      if (lodash.isEmpty(platformApiCredentials)) {
-        throw new NotFoundException(`Unable to find exchange platform name`);
-      }
-      // get cryptoexpertportfolio by case id
-      const expertCryptocase: ExpertCryptocase =
-        await this.expertCryptocase.findCryptocaseById(cryptocaseId);
-      if (!expertCryptocase) {
-        throw new NotFoundException(
-          `Unable to find expertPortfolio with id ${cryptocaseId}`,
-        );
-      }
-      // get qouteSymbol balance from platform/exchange
-      const userPlatformAccountInfo: UserExchangeAccountInfo =
-        await this.getUserAccountInfo(userId.toString(), Platform.BINANCE);
-      // get free balance as current balance
-      const balance: Balance = lodash.find(userPlatformAccountInfo.balances, {
-        asset: expertCryptocase.quoteSymbol,
-      });
-      if (lodash.isEmpty(balance)) {
-        throw new NotFoundException(
-          `balance not found for respective quote symbol ${expertCryptocase.quoteSymbol}`,
-        );
-      }
-      // get cryptoWeight weightagelist
-      const cryptoWeights: CryptoWeight[] =
-        expertCryptocase.cryptoWeightageList as CryptoWeight[];
-      // get currency pair(SHIBUSDT) from cryptoWeight currencysymbol(SHIB) and portfolio quotesymbol(USDT)
-      const portfolioTransactions = cryptoWeights.map(async (cryptoWeight) => {
-        // calculate quantity by checking current price of SHIBUSDT by claculating Weight percentage of current balalnce and divide it with current price
-        const coinsPair =
-          await this.cryptoCoinsService.findCoinsPairByBaseSymbolAndQuoteSymbol(
-            cryptoWeight.cryptoCoin.symbol,
-            expertCryptocase.quoteSymbol,
-          );
-        this.logger.debug(
-          `coins pair value ${JSON.stringify(coinsPair)} ${
-            cryptoWeight.cryptoCoin.symbol
-          } ${expertCryptocase.quoteSymbol}`,
-        );
-        const symbolCurrentPrice = (await this.getSymbolCurrentPrice(
-          Platform.BINANCE,
-          coinsPair.symbolPair,
-        )) as CurrentPrice;
-        const quantity: number = this.inprecise_round(
-          ((balance.free - balance.free * 0.1) *
-            cryptoWeight.currentPercentage) /
-            (100 * symbolCurrentPrice.price),
-          0,
-        );
-        this.logger.debug(
-          `creating a new order with coinsPair ${coinsPair.symbolPair} current symbol price ${symbolCurrentPrice} with quantity ${quantity}`,
-        );
-        // place new order on platform api with above details
-        const createNewOrderDto: CreateNewOrderDto = {
-          side: TransactionType.BUY,
-          symbol: coinsPair.symbolPair,
-          type: 'MARKET',
-          quantity: quantity,
-          quoteOrderQty: quantity,
-          newOrderResp: 'FULL',
-        };
-        const newExchangeOrder: NewOrderResponse = await this.createNewOrder(
-          user._id.toString(),
-          Platform.BINANCE,
-          createNewOrderDto,
-        );
-        this.logger.debug(
-          `successfully created new transaction order on exchange ${JSON.stringify(
-            newExchangeOrder,
-          )}`,
-        );
-        // create transaction object in db along with portfolio details
-        const newExchangeTransaction: TransactionDto = {
-          userId: user._id.toString(),
-          transactionType: TransactionType.BUY,
-          transactionFee: null,
-          transactionTime: newExchangeOrder.transactTime,
-          status: newExchangeOrder.transactionStatus,
-          quoteSymbol: coinsPair.quoteSymbol,
-          cummulativeBaseQtyBuy: newExchangeOrder.executedQty,
-          cummulativeQuoteQtySell: newExchangeOrder.cummulativeQuoteQty,
-          baseSymbol: coinsPair.cryptoCoin.symbol,
-          fills: newExchangeOrder.fills,
-          exchange: Platform.BINANCE,
-          cryptocaseId: expertCryptocase._id.toString(),
-        };
-        return await this.createNewUserTransaction(
-          Platform.BINANCE,
-          user._id,
-          newExchangeTransaction,
-        );
-      });
+  // async subscribeExpertPortfolio(
+  //   userId: Types.ObjectId,
+  //   cryptocaseId: Types.ObjectId,
+  // ) {
+  //   try {
+  //     // Find user with userId
+  //     const user: UsersEntity = await this.userService.getVerifiedUserById(
+  //       userId,
+  //     );
+  //     if (!user) {
+  //       throw new NotFoundException(
+  //         `Unable to find verified user with id ${userId}`,
+  //       );
+  //     }
+  //     // get platform api credentials
+  //     const platformApiCredentials = lodash.find(user.exchange, {
+  //       exchangeName: Platform.BINANCE,
+  //     });
+  //     if (lodash.isEmpty(platformApiCredentials)) {
+  //       throw new NotFoundException(`Unable to find exchange platform name`);
+  //     }
+  //     // get cryptoexpertportfolio by case id
+  //     // const expertCryptocase: ExpertCryptocase =
+  //     //   await this.expertCryptocase.findCryptocaseById(cryptocaseId);
+  //     if (!expertCryptocase) {
+  //       throw new NotFoundException(
+  //         `Unable to find expertPortfolio with id ${cryptocaseId}`,
+  //       );
+  //     }
+  //     // get qouteSymbol balance from platform/exchange
+  //     const userPlatformAccountInfo: UserExchangeAccountInfo =
+  //       await this.getUserAccountInfo(userId.toString(), Platform.BINANCE);
+  //     // get free balance as current balance
+  //     const balance: Balance = lodash.find(userPlatformAccountInfo.balances, {
+  //       asset: expertCryptocase.quoteSymbol,
+  //     });
+  //     if (lodash.isEmpty(balance)) {
+  //       throw new NotFoundException(
+  //         `balance not found for respective quote symbol ${expertCryptocase.quoteSymbol}`,
+  //       );
+  //     }
+  //     // get cryptoWeight weightagelist
+  //     const cryptoWeights: CryptoWeight[] =
+  //       expertCryptocase.cryptoWeightageList as CryptoWeight[];
+  //     // get currency pair(SHIBUSDT) from cryptoWeight currencysymbol(SHIB) and portfolio quotesymbol(USDT)
+  //     const portfolioTransactions = cryptoWeights.map(async (cryptoWeight) => {
+  //       // calculate quantity by checking current price of SHIBUSDT by claculating Weight percentage of current balalnce and divide it with current price
+  //       const coinsPair =
+  //         await this.cryptoCoinsService.findCoinsPairByBaseSymbolAndQuoteSymbol(
+  //           cryptoWeight.cryptoCoin.symbol,
+  //           expertCryptocase.quoteSymbol,
+  //         );
+  //       this.logger.debug(
+  //         `coins pair value ${JSON.stringify(coinsPair)} ${
+  //           cryptoWeight.cryptoCoin.symbol
+  //         } ${expertCryptocase.quoteSymbol}`,
+  //       );
+  //       const symbolCurrentPrice = (await this.getSymbolCurrentPrice(
+  //         Platform.BINANCE,
+  //         coinsPair.symbolPair,
+  //       )) as CurrentPrice;
+  //       const quantity: number = this.inprecise_round(
+  //         ((balance.free - balance.free * 0.1) *
+  //           cryptoWeight.currentPercentage) /
+  //           (100 * symbolCurrentPrice.price),
+  //         0,
+  //       );
+  //       this.logger.debug(
+  //         `creating a new order with coinsPair ${coinsPair.symbolPair} current symbol price ${symbolCurrentPrice} with quantity ${quantity}`,
+  //       );
+  //       // place new order on platform api with above details
+  //       const createNewOrderDto: CreateNewOrderDto = {
+  //         side: TransactionType.BUY,
+  //         symbol: coinsPair.symbolPair,
+  //         type: 'MARKET',
+  //         quantity: quantity,
+  //         quoteOrderQty: quantity,
+  //         newOrderResp: 'FULL',
+  //       };
+  //       const newExchangeOrder: NewOrderResponse = await this.createNewOrder(
+  //         user._id.toString(),
+  //         Platform.BINANCE,
+  //         createNewOrderDto,
+  //       );
+  //       this.logger.debug(
+  //         `successfully created new transaction order on exchange ${JSON.stringify(
+  //           newExchangeOrder,
+  //         )}`,
+  //       );
+  //       // create transaction object in db along with portfolio details
+  //       const newExchangeTransaction: TransactionDto = {
+  //         userId: user._id.toString(),
+  //         transactionType: TransactionType.BUY,
+  //         transactionFee: null,
+  //         transactionTime: newExchangeOrder.transactTime,
+  //         status: newExchangeOrder.transactionStatus,
+  //         quoteSymbol: coinsPair.quoteSymbol,
+  //         cummulativeBaseQtyBuy: newExchangeOrder.executedQty,
+  //         cummulativeQuoteQtySell: newExchangeOrder.cummulativeQuoteQty,
+  //         baseSymbol: coinsPair.cryptoCoin.symbol,
+  //         fills: newExchangeOrder.fills,
+  //         exchange: Platform.BINANCE,
+  //         // cryptocaseId: expertCryptocase._id.toString(),
+  //       };
+  //       return await this.createNewUserTransaction(
+  //         Platform.BINANCE,
+  //         user._id,
+  //         newExchangeTransaction,
+  //       );
+  //     });
 
-      return {
-        error: false,
-        message: 'Success fully subscribed the cryptocase',
-        data: {
-          cryptocaseId: cryptocaseId,
-        },
-      };
-    } catch (error) {
-      throw new InternalServerErrorException(
-        `Unexpected error occurred due to: ${error.message}`,
-      );
-    }
-  }
+  //     return {
+  //       error: false,
+  //       message: 'Success fully subscribed the cryptocase',
+  //       data: {
+  //         cryptocaseId: cryptocaseId,
+  //       },
+  //     };
+  //   } catch (error) {
+  //     throw new InternalServerErrorException(
+  //       `Unexpected error occurred due to: ${error.message}`,
+  //     );
+  //   }
+  // }
 
   inprecise_round(value, decPlaces) {
     return (
