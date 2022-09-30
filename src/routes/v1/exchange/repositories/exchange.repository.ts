@@ -7,8 +7,6 @@ import {
 } from '@nestjs/common';
 import { MyLogger } from '@shared/logger/logger.service';
 import { catchError, lastValueFrom, map } from 'rxjs';
-import { SymbolFilterDto } from '../dto/symbol-filter.dto';
-import { Balance } from '../entities/balance.entity';
 import { CurrentPrice } from '../entities/current-price.entity';
 import { HistoricalExchangeData } from '../entities/historical-data.entity';
 import { NewOrderResponse } from '../entities/new-order-response.entity';
@@ -227,9 +225,7 @@ export default class ExchangeRepository {
       const responseResult = await lastValueFrom(assetTypes$);
       return responseResult.result[ExchangeHistoryData.periods[periods]];
     } catch (error) {
-      throw new InternalServerErrorException(
-        `Unexpected error occured on fetching exchange history`,
-      );
-    }
+      throw new InternalServerErrorException(`Unexpected error occured on fetching exchange history`);
+    }    
   }
 }

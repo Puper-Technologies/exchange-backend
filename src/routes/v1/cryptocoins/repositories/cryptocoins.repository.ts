@@ -84,17 +84,14 @@ export class CryptocoinRepository {
         })
         .lean();
 
-      this.logger.log(
-        `Successfully found multiple cryptocoins with ids ${cryptocoin.length} from db`,
-      );
-      return cryptocoin;
-    } catch (error) {
-      this.logger.error(
-        `Unexpected error while searching crypto coin with id ${ids} due to ${error.message}`,
-      );
-      throw new MongoError(error);
-    }
+            this.logger.log(`Successfully found cryptocoin with id ${ids} from db`);
+            return cryptocoin
+        } catch (error) {
+            this.logger.error(`Unexpected error while searching crypto coin with id ${ids} due to ${error.message}`)
+            throw new MongoError(error);
+        }
   }
+
 
   public async getBySymbol(symbol: string): Promise<Cryptocoin | null> {
     try {

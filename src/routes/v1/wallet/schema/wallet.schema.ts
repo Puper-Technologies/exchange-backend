@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 
-@Schema({ timestamps: true })
+@Schema({ timestamps:true })
 export class Wallet {
   @Prop({
     type: Types.ObjectId,
@@ -19,11 +19,19 @@ export class Wallet {
   coinId: Types.ObjectId;
 
   @Prop({
-    type: Number,
-    required: true,
-    default: 0,
+      type: Number,
+      required: true,
+      default: 0
   })
   balance: number;
+
+  @Prop({
+      type: Boolean,
+      required: true,
+      default: true
+  })
+  isActive: boolean;
+
 }
 
 export type WalletDocument = Wallet & Document;

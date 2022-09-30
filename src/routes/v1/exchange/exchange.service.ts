@@ -114,11 +114,15 @@ export class ExchangeService {
     )) as CurrentPrice[];
   }
 
+<<<<<<< HEAD
   async createNewOrder(
     userId: string,
     platform: string,
     createNewOrder: CreateNewOrderDto,
   ): Promise<NewOrderResponse> {
+=======
+  async createNewOrder(userId: string, platform: string, createNewOrder: CreateNewOrderDto): Promise<NewOrderResponse> {
+>>>>>>> 89d90e7cb2685d630f18518a3b9e2e78a77de412
     try {
       const { symbol, side, type, quantity, quoteOrderQty, newOrderResp } =
         createNewOrder;
