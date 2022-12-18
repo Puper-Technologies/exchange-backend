@@ -15,7 +15,7 @@ export default class RolesGuard implements CanActivate {
     private reflector: Reflector,
     // private jwtService: JwtService,
     private usersService: UsersService,
-    private firebaseAuthService: FirebaseAuthService
+    private firebaseAuthService: FirebaseAuthService,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -25,13 +25,17 @@ export default class RolesGuard implements CanActivate {
     }
     const request: FastifyRequest = context.switchToHttp().getRequest();
     // const tokenData = (await this.jwtService.decode(request.headers.authorization?.split('Bearer')[1].trim() as string) as JwtDecodeResponse | null);
-       const tokenData = await this.firebaseAuthService.authenticateToken(request.headers.authorization);
-       const userData = await this.usersService.getUserByQueryModified({ authId:tokenData.uid });
+    const tokenData = await this.firebaseAuthService.authenticateToken(
+      request.headers.authorization,
+    );
+    const userData = await this.usersService.getUserByQueryModified({
+      authId: tokenData.uid,
+    });
     // if (tokenData?.role === RolesEnum.ADMIN) {
-       if (userData?.role === RolesEnum.ADMIN) {
-         return true;
-        }
-      // return !tokenData ? false : roles.includes(tokenData?.role);
-      return !userData ? false : roles.includes(userData?.role)
+    if (userData?.role === RolesEnum.ADMIN) {
+      return true;
+    }
+    // return !tokenData ? false : roles.includes(tokenData?.role);
+    return !userData ? false : roles.includes(userData?.role);
   }
 }

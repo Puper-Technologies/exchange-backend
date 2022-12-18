@@ -6,19 +6,17 @@ import { RolesEnum } from '@decorators/roles.decorator';
 import { ExchangeUserDto } from '../dto/exchange-user-dto';
 @Schema()
 export class User {
-
   @Prop({
-    required:true,
-    index:true,
-    type:String
+    unique: true,
+    type: String,
   })
-  authId:string;
+  authId?: string;
 
   @Prop({
     required: true,
     type: String,
   })
-  name : string;
+  name: string;
 
   @Prop({
     required: true,
@@ -70,7 +68,6 @@ export class User {
   })
   address?: AddressUserDto;
 
-
   @Prop({
     // required: true,
     type: Boolean,
@@ -85,22 +82,15 @@ export class User {
   })
   role: RolesEnum;
 
-  // @Prop({
-  //   type: [],
-  //   required: false,
-  //   default: null
-  // })
-  // exchange?: ExchangeUserDto[]
-
   @Prop({
-    type:Boolean,
-    required:false
+    type: Boolean,
+    required: false,
   })
   whatsappUpdate?: boolean;
-  
+
   @Prop({
-    type:String,
-    required:false
+    type: String,
+    required: false,
   })
   userSource?: string;
 }

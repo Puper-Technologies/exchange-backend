@@ -1,12 +1,14 @@
-import { Types } from "mongoose";
+import { Prop, SchemaFactory } from '@nestjs/mongoose';
+import { Document, Types } from 'mongoose';
 
 export class WalletEntity {
+  userId: Types.ObjectId; // owner of this wallet
 
-    _id ?: Types.ObjectId;
+  isActive: boolean;
 
-    userId : Types.ObjectId;
-    
-    coinId : Types.ObjectId;
-    
-    balance : number;
+  walletAddress?: string;
+
+  pk?: string;
+
+  mnemonic?: string;
 }

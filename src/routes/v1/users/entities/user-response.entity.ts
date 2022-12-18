@@ -9,44 +9,48 @@ class Data {
 
   role: RolesEnum = RolesEnum.USER;
 
-  verified: boolean = false;
+  verified = false;
 
-  email: string = '';
+  email = '';
 
   @Exclude()
-  password: string = '';
+  password = '';
 }
 
 export default class UserResponseEntity {
   @ValidateNested({ each: true })
   @Type(() => Data)
-  data?: [{
-    _id: ObjectId;
+  data?: [
+    {
+      _id: ObjectId;
 
-    role: string;
+      role: string;
 
-    verified: false;
+      verified: false;
 
-    email: string;
+      email: string;
 
-    password: string;
-  }] = [{
-    _id: new ObjectId(),
+      password: string;
+    },
+  ] = [
+    {
+      _id: new ObjectId(),
 
-    role: '',
+      role: '',
 
-    verified: false,
+      verified: false,
 
-    email: '',
+      email: '',
 
-    password: '',
-  }]
+      password: '',
+    },
+  ];
 
   collectionName?: string = '';
 
   options?: {
-    location: string,
-    paginationParams: PaginationParamsInterface,
-    totalCount: number,
-  }
+    location: string;
+    paginationParams: PaginationParamsInterface;
+    totalCount: number;
+  };
 }

@@ -8,6 +8,7 @@ import LocalStrategy from './strategies/local.strategy';
 import JwtAccessStrategy from './strategies/jwt.strategy';
 import { LoggerModule } from '@shared/logger/logger.module';
 import { FirebaseAuthService } from '@resources/firebase/firebase.service';
+import { WalletModule } from '@v1/wallet/wallet.module';
 /**
  * Root module of the application
  */
@@ -16,12 +17,18 @@ import { FirebaseAuthService } from '@resources/firebase/firebase.service';
     UsersModule,
     PassportModule,
     JwtModule.register({
-      secret: "This is test secret"
+      secret: 'This is test secret',
     }),
-    LoggerModule
+    LoggerModule,
+    WalletModule
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtAccessStrategy,FirebaseAuthService],
-  exports:[AuthService]
+  providers: [
+    AuthService,
+    LocalStrategy,
+    JwtAccessStrategy,
+    FirebaseAuthService,
+  ],
+  exports: [AuthService],
 })
 export class AuthModule {}
