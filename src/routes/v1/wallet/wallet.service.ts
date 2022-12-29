@@ -103,4 +103,5 @@ export class WalletService {
     const wallet = ethers.Wallet.createRandom();
     return wallet;
   }
+
 }
