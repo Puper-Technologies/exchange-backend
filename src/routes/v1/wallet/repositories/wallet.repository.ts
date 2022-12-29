@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { MyLogger } from "@shared/logger/logger.service";
-import { Model } from "mongoose";
+import { Model, Types } from "mongoose";
 import { Wallet, WalletDocument } from "../schema/wallet.schema";
 import { MongoError } from 'mongodb';
 
@@ -18,7 +18,7 @@ export class WalletRepository{
         try {
             const newWallet = await this.walletModel.create({
                 ...wallet
-            })
+            });
             this.logger.log(`Successfully created a new Wallet in db ${newWallet}`);
             return newWallet.toObject();
         }
@@ -29,7 +29,4 @@ export class WalletRepository{
         
     }
 
-    async addMoneyInWallet(){
-        
-    }
 }

@@ -194,6 +194,12 @@ export const Duration = {
   '1week': 7*24*60*60*1000
 }
 
+export enum StatusType {
+  ACTIVE = 'active',
+  INACTIVE = 'inactive',
+  FAILED = 'failed',
+  REJECTED = 'rejected'
+}
 
 enum DurationType {
   FIVE_MIN = '5m',

@@ -8,11 +8,6 @@ export class CreateWalletDto {
     @IsString()
     userId: string;
 
-    @ApiProperty({ type: String })
-    @IsNotEmpty()
-    @IsString()
-    coinId: string;
-
     @ApiProperty({ type: Number })
     @IsNotEmpty()
     @IsNumber()

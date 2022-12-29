@@ -6,6 +6,7 @@ import Serialize from '@decorators/serialization.decorator';
 import ResponseUtil from '@utils/response.util';
 import { WalletService } from "./wallet.service";
 import { Types } from "mongoose";
+import { StatusType } from "@config/constants";
 
 // to be remove in future (all operation must perform by services)
 @ApiTags('wallet')
@@ -63,10 +64,8 @@ export class WalletController {
   @Post()
   async createCryptoWallet(@Body() walletDto: CreateWalletDto) {
     const newWalletDto = {
-      ...walletDto,
       userId: new Types.ObjectId(walletDto.userId),
-      coinId: new Types.ObjectId(walletDto.coinId),
-      isActive: true
+      status: StatusType.ACTIVE
     }
     const newWallet = await this.walletService.createWallet(newWalletDto);
     if (!newWallet) {
@@ -77,5 +76,12 @@ export class WalletController {
       'wallet',
       newWallet
     );
+  }
+
+  @Post('/transfer')
+  createCryptoTransfer(){
+    // sender wallet id & tokenId/coinId
+    // receiver walletId & tokenId 
+    
   }
 }

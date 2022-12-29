@@ -28,7 +28,6 @@
     "@nestjs/jwt": "^8.0.0",
     "@nestjs/mapped-types": "*",
     "@nestjs/mongoose": "^9.0.1",
-    "@nestjs/passport": "^8.0.1",
     "@nestjs/platform-fastify": "^8.2.2",
     "@nestjs/schedule": "^1.0.2",
     "@nestjs/swagger": "^5.1.5",
@@ -47,12 +46,10 @@
     "lodash": "^4.17.21",
     "mongoose": "^6.0.13",
     "nest-router": "^1.0.9",
-    "passport": "^0.5.0",
-    "passport-jwt": "^4.0.0",
-    "passport-local": "^1.0.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
+    "web3": "^1.8.0",
     "xmlhttprequest": "^1.8.0"
   },
   "devDependencies": {

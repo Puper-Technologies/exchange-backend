@@ -1,0 +1,8 @@
+who will create wallet
+-- wallet will be created when user creates its account 
+-- Items to be created during signup
+    -- user account
+    -- ethereum wallet -- this will be created during signup
+    -- softwallet -- this is the walletBalance 
+-- when wallet balance will be created 
+when any transfer occurs then wallet balance will be created based on the token

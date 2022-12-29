@@ -1,18 +1,8 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, UseGuards, ForbiddenException, UseInterceptors, UnauthorizedException, Put, UseFilters, Headers, Req, } from '@nestjs/common';
 import { AuthService } from './auth.service';
-// import { CreateAuthDto } from './dto/create-auth.dto';
-// import { UpdateAuthDto } from './dto/update-auth.dto';
-// import { LoginAuthDto } from './dto/login-auth.dto';
-// import { OtpUserDto } from '@v1/users/dto/otp-user.dto';
-// import UserDto from '@v1/users/dto/user.dto';
-// import { SignUpDto } from '@v1/users/dto/sign-up.dto';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiConflictResponse, ApiExtraModels, ApiInternalServerErrorResponse, ApiNoContentResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags, ApiUnauthorizedResponse, getSchemaPath } from '@nestjs/swagger';
 import JwtTokensDto from './dto/jwt-token.dto';
-// import LocalAuthGuard from '@guards/auth.guard';
-// import JwtAccessGuard from '@guards/jwt-access.guard';
 import UsersEntity from '@v1/users/entities/user.entity';
-// import AuthBearer from '@decorators/auth-bearer.decorator';
-// import { JwtDecodedUser } from './interfaces/jwt-decoded-user.interface';
 import ResponseUtils from '@utils/response.util';
 import UserResponseEntity from '@v1/users/entities/user-response.entity';
 import Serialize from '@decorators/serialization.decorator';
