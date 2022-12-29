@@ -1,4 +1,4 @@
-import { TransactionType } from "@config/constants";
+import { ExchangeType } from "@config/constants";
 import { IsEnum, IsMongoId, IsNotEmpty, IsNumber, IsPositive, IsString } from "class-validator";
 
 export class CreateOrderDto {
@@ -15,8 +15,8 @@ export class CreateOrderDto {
     @IsPositive()
     limit: number;
 
-    @IsEnum(TransactionType)
-    orderType: TransactionType;
+    @IsEnum(ExchangeType)
+    orderType: ExchangeType;
 
     @IsNumber()
     @IsPositive()

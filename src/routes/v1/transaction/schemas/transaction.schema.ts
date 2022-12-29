@@ -1,6 +1,6 @@
-import { TransactionType } from "@config/constants";
+import { ExchangeType, TransactionStatus } from "@config/constants";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { TransactionStatus } from "aws-sdk/clients/rdsdataservice";
+
 
 @Schema({timestamps: true})
 export class Transaction {
@@ -19,14 +19,14 @@ export class Transaction {
     @Prop({
         type: String,
         requried: true,
-        enum : TransactionType
+        enum : ExchangeType
     })
-    transactionType: TransactionType;
+    transactionType: ExchangeType;
     
     @Prop({
         type: String,
         required: true,
-        enum: TransactionType,
+        enum: TransactionStatus,
         default: 'pending'
     })
     status: TransactionStatus;

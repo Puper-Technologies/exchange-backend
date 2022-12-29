@@ -63,6 +63,12 @@ export enum ExchangeStatus {
   REJECTED = 'rejected',
 }
 
+export enum TransactionStatus {
+  SUCCESS = 'success',
+  FAILED = 'failed',
+  PENDING = 'pending',
+  REJECTED = 'rejected',
+}
 export enum Platform {
   BINANCE = 'binance',
   COINDCX = 'coindcx',

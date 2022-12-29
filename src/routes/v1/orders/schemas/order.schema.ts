@@ -1,4 +1,4 @@
-import { TransactionType } from '@config/constants';
+import { ExchangeType } from '@config/constants';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { SchemaTypes, Types, Document } from 'mongoose';
 /**
@@ -28,10 +28,10 @@ export class Order {
 
     @Prop({
         type: String,
-        enum: TransactionType,
+        enum: ExchangeType,
         required: true
     })
-    orderType: TransactionType;
+    orderType: ExchangeType;
 
     @Prop({
         type: SchemaTypes.Number,
