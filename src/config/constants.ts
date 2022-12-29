@@ -50,13 +50,13 @@ export enum QUOTE_SYMBOL {
   BNB = 'BNB',
 }
 
-export enum TransactionType {
+export enum ExchangeType {
   BUY = 'buy',
   SELL = 'sell',
   NONE = 'none',
 }
 
-export enum TransactionStatus {
+export enum ExchangeStatus {
   SUCCESS = 'success',
   FAILED = 'failed',
   PENDING = 'pending',

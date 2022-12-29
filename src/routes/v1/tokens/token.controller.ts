@@ -64,7 +64,7 @@ import { Platform } from '@config/constants';
 // @Roles(RolesEnum.ADMIN, RolesEnum.EXPERT)
 @Controller('cryptocoins')
 export class CryptocoinsController {
-  constructor(private readonly cryptocoinsService: CryptocoinsService) { }
+  constructor(private readonly cryptocoinsService: CryptocoinsService) {}
 
   // addCryptoCurrency
   @ApiBody({ type: CreateCryptocoinDto })

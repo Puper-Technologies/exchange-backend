@@ -105,22 +105,20 @@ export class AuthController {
         error: true,
         statusCode: 400,
         timestamp: Date,
-        path: "req.url",
+        path: 'req.url',
         details: {
-            errorType: "ValidationError",
-            errors: [
-                {
-                    detail: "detail error message",
-                    source: {
-                        pointer: "attribute which has invalid data type"
-                    },
-                    meta: [
-                        "list of all validation exceptions solutions"
-                    ]
-                }
-            ]
-        }
-    },
+          errorType: 'ValidationError',
+          errors: [
+            {
+              detail: 'detail error message',
+              source: {
+                pointer: 'attribute which has invalid data type',
+              },
+              meta: ['list of all validation exceptions solutions'],
+            },
+          ],
+        },
+      },
     },
     description: '400. ValidationException',
   })
@@ -131,13 +129,13 @@ export class AuthController {
         error: true,
         statusCode: 400,
         timestamp: Date,
-        path: "req.url",
+        path: 'req.url',
         message: 'string',
         details: {
           statusCode: 500,
-          message: "Error message",
-          error: "Internal Server Error"
-      },
+          message: 'Error message',
+          error: 'Internal Server Error',
+        },
       },
     },
     description: '500. InternalServerError',
@@ -517,20 +515,18 @@ export class AuthController {
         timestamp: Date,
         path: "req.url",
         details: {
-            errorType: "ValidationError",
-            errors: [
-                {
-                    detail: "detail error message",
-                    source: {
-                        pointer: "attribute which has invalid data type"
-                    },
-                    meta: [
-                        "list of all validation exceptions solutions"
-                    ]
-                }
-            ]
-        }
-    },
+          errorType: 'ValidationError',
+          errors: [
+            {
+              detail: 'detail error message',
+              source: {
+                pointer: 'attribute which has invalid data type',
+              },
+              meta: ['list of all validation exceptions solutions'],
+            },
+          ],
+        },
+      },
     },
     description: '400. ValidationException',
   })
@@ -615,13 +611,13 @@ export class AuthController {
         error: true,
         statusCode: 400,
         timestamp: Date,
-        path: "req.url",
+        path: 'req.url',
         message: 'string',
         details: {
           statusCode: 500,
-          message: "Error message",
-          error: "Internal Server Error"
-      },
+          message: 'Error message',
+          error: 'Internal Server Error',
+        },
       },
     },
     description: '500. InternalServerError',
