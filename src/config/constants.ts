@@ -195,9 +195,7 @@ export {
   RewardType,
   ParticipantStatusType,
   CryptoWeightState,
-  CryptocaseType,
   Period,
   DomainType,
-  VolatilityType,
   SortOrderType,
 };
