@@ -63,6 +63,12 @@ export enum ExchangeStatus {
   REJECTED = 'rejected',
 }
 
+export enum OrderStatus {
+  INQUEUE = 'inqueue',
+  COMPLETED = 'completed',
+  FAILED = 'failed'
+}
+
 export enum TransactionStatus {
   SUCCESS = 'success',
   FAILED = 'failed',

@@ -2,10 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { MyLogger } from '@shared/logger/logger.service';
 import { UsersService } from '@v1/users/users.service';
 import { Types } from 'mongoose';
-import { WalletDto } from './dto/crypto-wallet.dto';
-import { WalletTransaction } from './dto/wallet-transaction.dto';
 import { WalletRepository } from './repositories/wallet.repository';
-import { Wallet, WalletDocument } from './schema/wallet.schema';
+import { Wallet } from './schema/wallet.schema';
 import * as ethers from 'ethers';
 @Injectable()
 export class WalletService {

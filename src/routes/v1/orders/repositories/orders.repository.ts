@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { MyLogger } from '@shared/logger/logger.service';
 import { Error, Model, Types } from 'mongoose';
@@ -7,6 +7,7 @@ import { PaginationParamsInterface } from '@interfaces/pagination-params.interfa
 import { PaginatedCryptocoinsInterface } from '@interfaces/paginated-users.interface';
 import PaginationUtil from '@utils/pagination.util';
 import { Order, OrderDocument } from '../schemas/order.schema';
+import { OrderStatus } from '@config/constants';
 @Injectable()
 export class OrdersRepository {
   constructor(
@@ -23,9 +24,7 @@ export class OrdersRepository {
         ...order,
       });
 
-      this.logger.log(
-        `Successfully created a new order in db ${newOrder}`,
-      );
+      this.logger.log(`Successfully created a new order in db ${newOrder}`);
       return newOrder.toObject();
     } catch (error) {
       this.logger.error(
@@ -37,13 +36,10 @@ export class OrdersRepository {
     }
   }
 
-
   public async getOrderById(id: Types.ObjectId): Promise<Order | null> {
     try {
       const order = await this.orderModel.findById(id).lean();
-      this.logger.log(
-        `Successfully found order with id ${order} from db`,
-      );
+      this.logger.log(`Successfully found order with id ${order} from db`);
       return order;
     } catch (error) {
       this.logger.error(
@@ -73,49 +69,70 @@ export class OrdersRepository {
     }
   }
 
-//   public async getBySymbol(symbol: string): Promise<order | null> {
-//     try {
-//       const order = await this.orderModel
-//         .findOne({
-//           symbol,
-//         })
-//         .lean();
+  public async updateOrder(
+    orderId: String,
+    statuse: OrderStatus,
+    filleds: number,
+  ) {
+    try {
+      const newOrder = this.orderModel.findByIdAndUpdate(orderId, {
+        status: statuse,
+        filled: filleds,
+      });
+      if(!newOrder) {
+        throw new NotFoundException(`Order ${orderId} not found`);
+      }
+    } catch (error) {
+      this.logger.error(
+        `Unexpected error occured while updating the order details of order id: ${orderId} due to ${error.message}`,
+      );
+      throw new MongoError(error);
+    }
+  }
 
-//       this.logger.log(`Successfully found order in db ${order.name}`);
-//       return cryptocoin;
-//     } catch (error) {
-//       this.logger.error(
-//         `Unexpected error while searching for cryptocoin ${symbol} due to ${error.message}`,
-//       );
-//       throw new MongoError(error);
-//     }
-//   }
+  //   public async getBySymbol(symbol: string): Promise<order | null> {
+  //     try {
+  //       const order = await this.orderModel
+  //         .findOne({
+  //           symbol,
+  //         })
+  //         .lean();
 
-//   public async getAllCryptocoinsWithPagination(
-//     query: any,
-//     options: PaginationParamsInterface,
-//   ): Promise<PaginatedCryptocoinsInterface> {
-//     try {
-//       console.log(query);
-//       const [cryptocoin, totalCount] = await Promise.all([
-//         this.orderModel
-//           .find(query)
-//           .sort({ cmcRank: 1 })
-//           .skip(PaginationUtil.getSkipCount(options.page, options.limit))
-//           .limit(PaginationUtil.getLimitCount(options.limit))
-//           .lean(),
-//         this.orderModel.count().lean(),
-//       ]);
+  //       this.logger.log(`Successfully found order in db ${order.name}`);
+  //       return cryptocoin;
+  //     } catch (error) {
+  //       this.logger.error(
+  //         `Unexpected error while searching for cryptocoin ${symbol} due to ${error.message}`,
+  //       );
+  //       throw new MongoError(error);
+  //     }
+  //   }
 
-//       this.logger.log(
-//         `Successfully found the list of cryptocoins from db ${totalCount}`,
-//       );
-//       return { paginatedResult: cryptocoin, totalCount };
-//     } catch (error) {
-//       this.logger.error(
-//         `Unexpected error while listing crypto coin from db due to ${error.message}`,
-//       );
-//       throw new MongoError(error);
-//     }
-//   }
+  //   public async getAllCryptocoinsWithPagination(
+  //     query: any,
+  //     options: PaginationParamsInterface,
+  //   ): Promise<PaginatedCryptocoinsInterface> {
+  //     try {
+  //       console.log(query);
+  //       const [cryptocoin, totalCount] = await Promise.all([
+  //         this.orderModel
+  //           .find(query)
+  //           .sort({ cmcRank: 1 })
+  //           .skip(PaginationUtil.getSkipCount(options.page, options.limit))
+  //           .limit(PaginationUtil.getLimitCount(options.limit))
+  //           .lean(),
+  //         this.orderModel.count().lean(),
+  //       ]);
+
+  //       this.logger.log(
+  //         `Successfully found the list of cryptocoins from db ${totalCount}`,
+  //       );
+  //       return { paginatedResult: cryptocoin, totalCount };
+  //     } catch (error) {
+  //       this.logger.error(
+  //         `Unexpected error while listing crypto coin from db due to ${error.message}`,
+  //       );
+  //       throw new MongoError(error);
+  //     }
+  //   }
 }

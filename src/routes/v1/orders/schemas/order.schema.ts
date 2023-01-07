@@ -1,4 +1,4 @@
-import { ExchangeType } from '@config/constants';
+import { ExchangeType, OrderStatus } from '@config/constants';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { SchemaTypes, Types, Document } from 'mongoose';
 /**
@@ -32,6 +32,14 @@ export class Order {
         required: true
     })
     orderType: ExchangeType;
+
+    @Prop({
+        type: String,
+        enum: OrderStatus,
+        required: true,
+        default: OrderStatus.INQUEUE
+    })
+    status: String;
 
     @Prop({
         type: SchemaTypes.Number,

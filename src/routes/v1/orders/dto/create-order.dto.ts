@@ -3,13 +3,13 @@ import { IsEnum, IsMongoId, IsNotEmpty, IsNumber, IsPositive, IsString } from "c
 
 export class CreateOrderDto {
 
-    @IsString()
-    @IsNotEmpty()
-    exchangePair: string;
-
     @IsMongoId()
     @IsNotEmpty()
     userId: string;
+
+    @IsString()
+    @IsNotEmpty()
+    exchangePair: string;
 
     @IsNumber()
     @IsPositive()
@@ -21,5 +21,4 @@ export class CreateOrderDto {
     @IsNumber()
     @IsPositive()
     amount: number;
-
 }
